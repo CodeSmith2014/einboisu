@@ -144,25 +144,4 @@ class ClientController extends \BaseController {
 		$client->delete();
 		return Redirect::route('clients.index');
 	}
-
-	/**
-	 * Set the default contact personnel for the client
-	 *
-	 */
-	public function set_default_contact(){
-		$rules = array(
-			'client_id' => 'required',
-			'contact_id' => 'required'
-			);
-		$validator = Validator::make(Input::all(), $rules);
-		if($validator->fails()){
-			return Redirect::route('clients.edit',Input::get('client_id'));
-		}else{
-			$client = Client::find(Input::get('client_id'));
-			$contact = Contact::find(Input::get('contact_id'));
-			$client->contact()->associate($contact);
-			$client->save();
-			return Redirect::route('clients.edit',Input::get('client_id'));
-		}
-	}
 }

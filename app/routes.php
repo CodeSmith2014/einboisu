@@ -44,7 +44,7 @@ Route::group(array('before' => 'auth'), function()
 		"uses"=>"ClientController@set_default_contact"
 		));
 	Route::resource('clients','ClientController');
-	Route::post('contacts/ajaxGetContacts/{id}','ContactController@ajaxGetContacts');
+	Route::post('contacts/ajaxGetContacts','ContactController@ajaxGetContacts');
 	Route::resource('contacts','ContactController',array('except'=>array('create','show','edit')));
 	Route::resource('systems','SystemController');
 	Route::resource('invoices','InvoiceController');

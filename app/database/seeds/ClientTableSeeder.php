@@ -14,8 +14,7 @@ class ClientTableSeeder extends Seeder {
 				'city'=>'Singapore',
 				'postal_code'=>'319074',
 				'office_no'=>'',
-				'fax_no'=>'',
-				'contact_id'=>'1'),
+				'fax_no'=>''),
 			
 			array(
 				'name'=>'Accesscorp Pte. Ltd.',
@@ -25,8 +24,7 @@ class ClientTableSeeder extends Seeder {
 				'city'=>'Singapore',
 				'postal_code'=>'179365',
 				'office_no'=>'',
-				'fax_no'=>'',
-				'contact_id'=>'2'),
+				'fax_no'=>''),
 
 			array(
 				'name'=>'AEI Group Pte. Ltd.',
@@ -36,8 +34,7 @@ class ClientTableSeeder extends Seeder {
 				'city'=>'Singapore',
 				'postal_code'=>'389838',
 				'office_no'=>'',
-				'fax_no'=>'',
-				'contact_id'=>'3'),
+				'fax_no'=>''),
 
 			array(
 				'name'=>'Alloys International Private Limited',
@@ -47,8 +44,7 @@ class ClientTableSeeder extends Seeder {
 				'city'=>'Singapore',
 				'postal_code'=>'628639',
 				'office_no'=>'+(65) 6265 4088',
-				'fax_no'=>'',
-				'contact_id'=>'4')
+				'fax_no'=>'')
 			));
 }
 }

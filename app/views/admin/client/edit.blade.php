@@ -609,13 +609,6 @@ Edit Client Company
 													<i class="fa fa-times"></i>
 												</button>
 											</a>
-											@if($client->contact == null || $client->contact!=null && $client->contact->id != $contact->id)
-											<a data-toggle="modal" href="#setDefaultContactModal" title="Set as default contact" data-id="{{$contact->id}}" id="confirm-set-default">
-												<button class="btn btn-xs btn-default">
-													<i class="fa fa-bolt"></i>
-												</button>
-											</a>											
-											@endif
 										</td>
 									</tr>	
 									@endforeach

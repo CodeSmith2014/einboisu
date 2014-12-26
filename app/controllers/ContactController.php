@@ -96,24 +96,16 @@ class ContactController extends \BaseController {
 
 	}
 
-	public function ajaxGetContacts($id){
-		$a = Client::find($id)->contacts()->get()->toArray();
-		$b = Contact::all()->toArray();
-		$c = array();
-		$d = array();
-		foreach($a as $a1){
-			array_push($c,$a1['id']);
-		}
-		foreach($b as $b1){
-			array_push($d,$b1['id']);
-		}
-		$d = array_diff($d, $c);
-		if(!empty($d)){
-			$e = Contact::whereIn('id',$d)->name(Input::get('q'))->toArray();
-			return $e;
-		}else{
-			return null;
-		}
 
+	/**
+		 * Get all contacts
+		 *
+		 * @param  int  $id
+		 * @return Response
+		 */
+
+	public function ajaxGetAllContacts(){
+		$a = Contact::all()->toArray();
+		return $a;
 	}
 }

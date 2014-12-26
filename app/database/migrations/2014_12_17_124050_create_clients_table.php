@@ -25,10 +25,6 @@ class CreateClientsTable extends Migration {
 			$table->string('office_no',20)->nullable();
 			$table->string('fax_no',20)->nullable();
 			$table->text('notes')->nullable();
-			$table->integer('contact_id')->unsigned()->nullable();
-			$table->foreign('contact_id')->references('id')->on('contacts')
-			->onDelete(DB::raw('set null'))->onUpdate('cascade');
-
 			$table->timestamps();
 		});
 	}
