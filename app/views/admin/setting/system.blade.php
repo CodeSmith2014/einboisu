@@ -75,6 +75,8 @@ System Settings
 								</label><i></i>	
 							</section>
 
+
+
 							<section class="col col-3">
 								<label class="label">Paper Size: </label>
 								<label class="select">
@@ -92,31 +94,31 @@ System Settings
 						<div class="row">
 							<section class="col col-6">
 								<label class="input"><i class="icon-append fa fa-coffee"></i>
-									<input type="text" name="company" placeholder="Company"/>
+									<input type="text" name="company" placeholder="Company" value="{{ $settings['id']->company_name }}"/>
 								</label>
 							</section>
 							<section class="col col-6">
 								<label class="input"><i class="icon-append fa fa-barcode"></i>
-									<input type="text" name="reg_no" placeholder="Registration no."/>
+									<input type="text" name="reg_no" placeholder="Registration no." value="{{ $settings['id']->reg_no }}"/>
 								</label>
 							</section>
 						</div>	
 						<div class="row">
 							<section class="col col-6">
 								<label class="input"><i class="icon-append fa fa-phone"></i>
-									<input type="text" name="phone" placeholder="Phone no."/>
+									<input type="text" name="office" placeholder="Office no." value="{{ $settings['id']->office_no }}"/>
 								</label>
 							</section>
 							<section class="col col-6">
 								<label class="input"><i class="icon-append fa fa-globe"></i>
-									<input type="text" name="web" placeholder="Web Address"/>
+									<input type="text" name="web_addr" placeholder="Web Address" value="{{ $settings['id']->web_addr }}"/>
 								</label>
 							</section>
 						</div>	
 
 						<section>
 							<label class="textarea"> 										
-								<textarea rows="3" class="custom-scroll" placeholder="Address"></textarea> 
+								<textarea rows="3" class="custom-scroll" placeholder="Address" value="{{ $settings['id']->address }}"></textarea> 
 							</label>
 						</section>
 
