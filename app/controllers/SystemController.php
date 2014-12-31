@@ -12,19 +12,38 @@ class SystemController extends \BaseController {
 		$sid = Setting::find(1);
 
 		$settings = array();
-		$zones_array = array();
-		foreach(timezone_identifiers_list() as $key => $zone) {
-			date_default_timezone_set($zone);
-			$zones_array[$key]['zone'] = $zone;
-			$zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', time());
-		}
+		// $zones_array = array();
+		// foreach(timezone_identifiers_list() as $key => $zone) {
+		// 	date_default_timezone_set($zone);
+		// 	$zones_array[$key]['zone'] = $zone;
+		// 	$zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', time());
+		// }
+		// $settings['zones_array']=$zones_array;
 
 		$date = new DateTime();
 		$date->setDate(1999, 12, 22);
 
-		$settings['id']=$sid;
-		$settings['date']=$date;
-		$settings['zones_array']=$zones_array;
+		foreach(timezone_identifiers_list() as $key => $zone) {
+			date_default_timezone_set($zone);
+			$format[$key] = 'UTC/GMT ' . date('P', time()).' - '.$zone;
+		}
+
+		$settings['id'] = $sid;
+		$settings['date_format_list'] = array(
+			'd/m/Y'=>date_format($date,'d/m/Y'),
+			'd-m-Y'=>date_format($date,"d-m-Y"),
+			'd.m.Y'=>date_format($date,"d.m.Y"),
+			'm/d/Y'=>date_format($date,"m/d/Y"),
+			'm-d-Y'=>date_format($date,"m-d-Y"),
+			'm.d.Y'=>date_format($date,"m.d.Y")
+		);
+		$settings['timezone_list'] = array_combine(timezone_identifiers_list(),$format);
+		$settings['paper_size_list'] = array(
+			'letter'=>'Letter',
+			'a4'=>'A4',
+			'legal'=>'Legal'
+		);
+
 		return View::make('admin.setting.system')->with('settings',$settings);
 	}
 
@@ -84,34 +103,23 @@ class SystemController extends \BaseController {
 	public function update($id)
 	{
 
-		$settings = Settings::find($id);
+		$settings = Setting::find($id);
 		// validation rules
 		$rules = array(
 			'logo'=>'image',
 			);
 		
 		//validate form input with validation rules
-		$validator = Validator::make(Input::all(),$rules, $this->messages);
+		$validator = Validator::make(Input::all(),$rules);
 
 		// if validator failed
 		if($validator->fails()){
 
-			// get the error messages from the validator
-			$messages = $validator->messages();
-
 			// redirect back to form with errors from validator
-			return Redirect::route('admin.setting.system', array($id))->withErrors($validator)->withInput();
+			return Redirect::route('systems.index')->withErrors($validator)->withInput();
 		}
 		else{
-			$timestamp = date_timestamp_get(date_create());
-			$lastdotposition = strripos(Input::file('logo')->getClientOriginalName(), '.');
-			$fileextension = substr(Input::file('logo')->getClientOriginalName(), $lastdotposition);
-
-			// store image in public/companylogo
-			Input::file('logo')->move(public_path().'/companylogo',$timestamp.$fileextension);
-
-			// create data
-			$settings->logo = $timestamp.$fileextension;
+			// $settings->logo = $timestamp.$fileextension;			
 			$settings->date_format = Input::get('date_format');
 			$settings->timezone = Input::get('timezone');
 			$settings->paper_size = Input::get('paper_size');
@@ -127,7 +135,7 @@ class SystemController extends \BaseController {
 			$settings->save();
 
 			// redirect back
-			return Redirect::route('admin.setting.system');
+			return Redirect::route('systems.index');
 		}
 	}
 

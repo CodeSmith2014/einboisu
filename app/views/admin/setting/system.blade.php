@@ -27,7 +27,7 @@ System Settings
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		{{Form::open(array('url'=>'/upload','method'=>'post'))}}
+		{{ Form::open(array('url'=>URL::route('systems.update', array($settings['id']->id)),'files'=>true, 'method'=>'PUT')) }}
 		<ul class="nav nav-tabs bordered">
 			<li class="active">
 				<a href="#s1" data-toggle="tab">General</a>
@@ -49,42 +49,28 @@ System Settings
 								</div>
 							</section>
 
+
+
 							<section class="col col-3">
 								<label class="label">Date Format: </label>
 								<label class="select">
-									<select name="date-format">
-										<option value="d/m/Y">{{date_format($settings['date'],'d/m/Y')}}</option>
-										<option value="d-m-Y">{{date_format($settings['date'],"d-m-Y")}}</option>
-										<option value="d.m.Y">{{date_format($settings['date'],"d.m.Y")}}</option>
-										<option value="m/d/Y">{{date_format($settings['date'],"m/d/Y")}}</option>
-										<option value="m-d-Y">{{date_format($settings['date'],"m-d-Y")}}</option>
-										<option value="m.d.Y">{{date_format($settings['date'],"m.d.Y")}}</option>
-									</select>
+									{{ Form::select('date_format', $settings['date_format_list'], $settings['id']->date_format)}}
 								</label><i></i>	
 							</section>
+
+							<!-- Form::select('product_id', $productList, null, array('class' => 'form-control')) -->
 
 							<section class="col col-3">
 								<label class="label">Timezone: </label>
 								<label class="select">
-									<select name="timezone">
-										<option selected="" value="0">Select your timezone</option>
-										@foreach($settings['zones_array'] as $zl)
-										<option value="{{$zl['zone']}}">{{$zl['diff_from_GMT'].' - '.$zl['zone']}}</option>
-										@endforeach
-									</select>
+									{{ Form::select('timezone', $settings['timezone_list'], $settings['id']->timezone)}}
 								</label><i></i>	
 							</section>
-
-
 
 							<section class="col col-3">
 								<label class="label">Paper Size: </label>
 								<label class="select">
-									<select name="paper-size">
-										<option value='letter'>Letter</option>
-										<option value='a4'>A4</option>
-										<option value='legal'>Legal</option>
-									</select>
+									{{ Form::select('paper_size', $settings['paper_size_list'], $settings['id']->paper_size)}}
 								</label><i></i>	
 							</section>
 
@@ -94,7 +80,7 @@ System Settings
 						<div class="row">
 							<section class="col col-6">
 								<label class="input"><i class="icon-append fa fa-coffee"></i>
-									<input type="text" name="company" placeholder="Company" value="{{ $settings['id']->company_name }}"/>
+									<input type="text" name="company_name" placeholder="Company" value="{{ $settings['id']->company_name }}"/>
 								</label>
 							</section>
 							<section class="col col-6">
@@ -106,7 +92,7 @@ System Settings
 						<div class="row">
 							<section class="col col-6">
 								<label class="input"><i class="icon-append fa fa-phone"></i>
-									<input type="text" name="office" placeholder="Office no." value="{{ $settings['id']->office_no }}"/>
+									<input type="text" name="office_no" placeholder="Office no." value="{{ $settings['id']->office_no }}"/>
 								</label>
 							</section>
 							<section class="col col-6">
@@ -117,8 +103,8 @@ System Settings
 						</div>	
 
 						<section>
-							<label class="textarea"> 										
-								<textarea rows="3" class="custom-scroll" placeholder="Address" value="{{ $settings['id']->address }}"></textarea> 
+							<label class="textarea">
+								<textarea name="address" rows="3" class="custom-scroll" placeholder="Address">{{ $settings['id']->address }}</textarea>
 							</label>
 						</section>
 
@@ -165,6 +151,7 @@ System Settings
 					</fieldset>
 				</div>
 			</div>
+			{{ Form::button('Save',array('class'=>'btn btn-primary','type'=>'submit') )}}
 		</div>
 		{{Form::close()}}
 	</div>
