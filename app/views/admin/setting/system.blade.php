@@ -107,7 +107,6 @@ System Settings
 								<textarea name="address" rows="3" class="custom-scroll" placeholder="Address">{{ $settings['id']->address }}</textarea>
 							</label>
 						</section>
-
 					</fieldset>
 				</div>
 			</div>
@@ -118,27 +117,25 @@ System Settings
 							<section class="col col-3">
 								<label class="label">Invoice Prefix: </label>
 								<label class="input">
-									<input type="text" name="invoice_prefix" placeholder="ICS"/>
+									<input type="text" name="invoice_prefix" placeholder="ICS" value="{{ $settings['id']->invoice_prefix }}"/>
 								</label>
 							</section>
-
 							<section class="col col-2">
 								<label class="label">Year Prefix: </label>
-								<label class="input">
-									<input type="text" name="year_prefix" placeholder="14"/>
-								</label>
+								<label class="select">
+									{{ Form::select('year_prefix', array(0 => 'Yes', 1 => 'No'), $settings['id']->year_prefix)}}
+								</label><i></i>
 							</section>
-
 							<section class="col col-2">
-								<label class="label">Year Prefix: </label>
-								<label class="input">
-									<input type="text" name="year_prefix" placeholder="14"/>
-								</label>
+								<label class="label">Month Prefix: </label>
+								<label class="select">
+									{{ Form::select('month_prefix', array(0 => 'Yes', 1 => 'No'), $settings['id']->month_prefix)}}
+								</label><i></i>
 							</section>
 							<section class="col col-2">
 								<label class="label">Left Pad: </label>
 								<label class="input">
-									<input type="text" name="left_pad" placeholder="0"/>
+									<input type="text" name="left_pad" placeholder="0" value="{{ $settings['id']->left_pad }}"/>
 								</label>
 							</section>
 							<section class="col col-3">
@@ -147,6 +144,7 @@ System Settings
 									<input type="text" disabled="" name="invoice_next_id" placeholder="Next ID"/>
 								</label>
 							</section>
+							{{ $settings['prefix_format'] }}
 						</div>	
 					</fieldset>
 				</div>

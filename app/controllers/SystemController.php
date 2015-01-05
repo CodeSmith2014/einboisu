@@ -44,6 +44,12 @@ class SystemController extends \BaseController {
 			'legal'=>'Legal'
 		);
 
+		$a = $sid->invoice_prefix;
+		if($sid->year_prefix == 0){ $a .= date("y"); }
+		if ($sid->month_prefix == 0){ $a .= date("m"); }
+		$b = str_pad(1, $sid->left_pad, '0', STR_PAD_LEFT);
+		$settings['prefix_format'] = $a.'-'.$b;
+
 		return View::make('admin.setting.system')->with('settings',$settings);
 	}
 
@@ -119,16 +125,20 @@ class SystemController extends \BaseController {
 			return Redirect::route('systems.index')->withErrors($validator)->withInput();
 		}
 		else{
+
 			// $settings->logo = $timestamp.$fileextension;			
 			$settings->date_format = Input::get('date_format');
 			$settings->timezone = Input::get('timezone');
 			$settings->paper_size = Input::get('paper_size');
-			// $settings->paper_orientation = Input::get('paper_orientation');
 			$settings->company_name = Input::get('company_name');
 			$settings->reg_no = Input::get('reg_no');
 			$settings->office_no = Input::get('office_no');
 			$settings->web_addr = Input::get('web_addr');
 			$settings->address = Input::get('address');
+			$settings->invoice_prefix = Input::get('invoice_prefix');
+			$settings->year_prefix = Input::get('year_prefix');
+			$settings->month_prefix = Input::get('month_prefix');
+			$settings->left_pad = Input::get('left_pad');
 
 			// save data
 			$settings->touch();

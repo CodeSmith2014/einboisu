@@ -11,12 +11,15 @@ class SettingTableSeeder extends Seeder {
 				'date_format'=>'',
 				'timezone'=>'',
 				'paper_size'=>'Letter',
-				'paper_orientation'=>'',
 				'company_name'=>'Billing Company',
 				'reg_no'=>'',
 				'office_no'=>'',
 				'web_addr'=>'',
 				'address'=>'',
+				'invoice_prefix'=>'ICS',
+				'year_prefix'=>'0',
+				'month_prefix'=>'0',
+				'left_pad'=>'4',
 				)
 			));
 	}

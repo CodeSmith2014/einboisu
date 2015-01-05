@@ -19,12 +19,15 @@ class CreateSettingsTable extends Migration {
 			$table->string('date_format')->default('d/m/Y');
 			$table->string('timezone')->default('Asia/Singapore');
 			$table->string('paper_size')->default('a4');
-			$table->string('paper_orientation')->default('portrait');
 			$table->string('company_name');
 			$table->string('reg_no');
 			$table->string('office_no');
 			$table->string('web_addr');
 			$table->string('address');
+			$table->string('invoice_prefix');
+			$table->boolean('year_prefix');
+			$table->boolean('month_prefix');
+			$table->integer('left_pad');
 			$table->timestamps();
 		});
 	}
