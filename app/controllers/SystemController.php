@@ -10,25 +10,10 @@ class SystemController extends \BaseController {
 	public function index()
 	{
 		$sid = Setting::find(1);
-
-		$settings = array();
-		// $zones_array = array();
-		// foreach(timezone_identifiers_list() as $key => $zone) {
-		// 	date_default_timezone_set($zone);
-		// 	$zones_array[$key]['zone'] = $zone;
-		// 	$zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', time());
-		// }
-		// $settings['zones_array']=$zones_array;
+		$settings['id'] = $sid;
 
 		$date = new DateTime();
 		$date->setDate(1999, 12, 22);
-
-		foreach(timezone_identifiers_list() as $key => $zone) {
-			date_default_timezone_set($zone);
-			$format[$key] = 'UTC/GMT ' . date('P', time()).' - '.$zone;
-		}
-
-		$settings['id'] = $sid;
 		$settings['date_format_list'] = array(
 			'd/m/Y'=>date_format($date,'d/m/Y'),
 			'd-m-Y'=>date_format($date,"d-m-Y"),
@@ -37,7 +22,13 @@ class SystemController extends \BaseController {
 			'm-d-Y'=>date_format($date,"m-d-Y"),
 			'm.d.Y'=>date_format($date,"m.d.Y")
 		);
+
+		foreach(timezone_identifiers_list() as $key => $zone) {
+			date_default_timezone_set($zone);
+			$format[$key] = 'UTC/GMT ' . date('P', time()).' - '.$zone;
+		}
 		$settings['timezone_list'] = array_combine(timezone_identifiers_list(),$format);
+
 		$settings['paper_size_list'] = array(
 			'letter'=>'Letter',
 			'a4'=>'A4',
@@ -126,7 +117,15 @@ class SystemController extends \BaseController {
 		}
 		else{
 
-			// $settings->logo = $timestamp.$fileextension;			
+			if(Input::file('logo')){
+				$image = Input::file('logo');
+				$filename=substr(sha1(rand().time().$image->getClientOriginalName()).'.'.$image->getClientOriginalExtension(),15);
+				$upload_dir = public_path().'/uploads';
+				Image::make($image->getRealPath())->resize('234')->save($upload_dir.'/'.$filename);				
+				
+				$settings->logo = $filename;
+			}
+
 			$settings->date_format = Input::get('date_format');
 			$settings->timezone = Input::get('timezone');
 			$settings->paper_size = Input::get('paper_size');

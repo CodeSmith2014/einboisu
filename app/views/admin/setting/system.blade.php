@@ -45,11 +45,9 @@ System Settings
 							<section class="col col-3">
 								<label class="label">Logo: </label>
 								<div class="input input-file">
-									<span class="button"><input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input type="text" placeholder="Select Logo Image" readonly="">
+									<span class="button"><input type="file" id="file" name="logo" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input type="text" placeholder="Select Logo Image" readonly="">
 								</div>
 							</section>
-
-
 
 							<section class="col col-3">
 								<label class="label">Date Format: </label>
@@ -57,8 +55,6 @@ System Settings
 									{{ Form::select('date_format', $settings['date_format_list'], $settings['id']->date_format)}}
 								</label><i></i>	
 							</section>
-
-							<!-- Form::select('product_id', $productList, null, array('class' => 'form-control')) -->
 
 							<section class="col col-3">
 								<label class="label">Timezone: </label>
