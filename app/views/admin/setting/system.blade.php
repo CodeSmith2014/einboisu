@@ -20,10 +20,18 @@ System Settings
 @stop
 
 @section('page_title_right')
-{{Form::submit('Save')}}
+
 @stop
 
 @section('content')
+
+@if ($errors->has())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            {{ $error }}<br>        
+        @endforeach
+    </div>
+@endif
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -41,11 +49,16 @@ System Settings
 				<div class="smart-form">
 					<fieldset>
 						<div class="row">
-
+							<section class="col col-12">
+								<img id="original_image" src="/uploads/{{ $settings['id']->logo }}" width="234" />
+								<img id="preview_image" src="" width="234" style="display:none"/>
+							</section>
+						</div>
+						<div class="row">
 							<section class="col col-3">
 								<label class="label">Logo: </label>
 								<div class="input input-file">
-									<span class="button"><input type="file" id="file" name="logo" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input type="text" placeholder="Select Logo Image" readonly="">
+									<span class="button"><input type="file" id="file" name="logo" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input id="path" type="text" placeholder="Select Logo Image" readonly="">
 								</div>
 							</section>
 
@@ -146,9 +159,29 @@ System Settings
 				</div>
 			</div>
 			{{ Form::button('Save',array('class'=>'btn btn-primary','type'=>'submit') )}}
+			{{ Form::reset('Reset form', array('class'=>'btn btn-default','id'=>'reset_form')) }}
 		</div>
 		{{Form::close()}}
 	</div>
 </div>
 
+@stop
+
+@section('document_ready')
+	// Single Image Preview
+	$('#file').on('change', function(event) {
+		var image = this.files[0];
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			$('#original_image').hide();
+			$('#preview_image').attr('src', e.target.result).show();
+	 	}
+	 	reader.readAsDataURL(image);
+		});
+
+	$('#reset_form').click(function() {
+		$('#original_image').show();
+		$('#preview_image').attr('src', '').hide();
+	});
 @stop

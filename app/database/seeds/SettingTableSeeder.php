@@ -7,13 +7,13 @@ class SettingTableSeeder extends Seeder {
 		DB::table('settings')->delete();
 		DB::table('settings')->insert(array(
 			array(
-				'logo'=>'',
+				'logo'=>'ad51fb98335447cfbdc8c3a4c.png',
 				'date_format'=>'',
 				'timezone'=>'',
 				'paper_size'=>'Letter',
-				'company_name'=>'Billing Company',
-				'reg_no'=>'',
-				'office_no'=>'',
+				'company_name'=>'Company Name',
+				'reg_no'=>'123',
+				'office_no'=>'123',
 				'web_addr'=>'',
 				'address'=>'',
 				'invoice_prefix'=>'ICS',

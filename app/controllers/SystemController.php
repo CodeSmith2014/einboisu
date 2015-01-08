@@ -104,6 +104,9 @@ class SystemController extends \BaseController {
 		// validation rules
 		$rules = array(
 			'logo'=>'image',
+			'company_name'=>'required',
+			'reg_no'=>'required',
+			'office_no'=>'required',
 			);
 		
 		//validate form input with validation rules
@@ -113,19 +116,20 @@ class SystemController extends \BaseController {
 		if($validator->fails()){
 
 			// redirect back to form with errors from validator
+			$messages = $validator->messages();
 			return Redirect::route('systems.index')->withErrors($validator)->withInput();
 		}
 		else{
 
 			if(Input::file('logo')){
 				$image = Input::file('logo');
-				$filename=substr(sha1(rand().time().$image->getClientOriginalName()).'.'.$image->getClientOriginalExtension(),15);
+				$filename=substr(sha1(rand().microtime().$image->getClientOriginalName()).'.'.$image->getClientOriginalExtension(),15);
 				$upload_dir = public_path().'/uploads';
-				Image::make($image->getRealPath())->resize('234')->save($upload_dir.'/'.$filename);				
-				
-				$settings->logo = $filename;
+				Image::make($image->getRealPath())->resize('234', null, function ($constraint){$constraint->aspectRatio();})->save($upload_dir.'/'.$filename);				
 			}
 
+
+			$settings->logo = $filename;
 			$settings->date_format = Input::get('date_format');
 			$settings->timezone = Input::get('timezone');
 			$settings->paper_size = Input::get('paper_size');
