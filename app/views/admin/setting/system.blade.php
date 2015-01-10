@@ -58,7 +58,7 @@ System Settings
 							<section class="col col-3">
 								<label class="label">Logo: </label>
 								<div class="input input-file">
-									<span class="button"><input type="file" id="file" name="logo" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input id="path" type="text" placeholder="Select Logo Image" readonly="">
+									<span class="button"><input type="file" id="file" name="logo" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input type="text" placeholder="Select Logo Image" readonly="">
 								</div>
 							</section>
 
@@ -173,12 +173,12 @@ System Settings
 		var image = this.files[0];
 		var reader = new FileReader();
 
+		reader.readAsDataURL(image);
 		reader.onload = function(e) {
 			$('#original_image').hide();
 			$('#preview_image').attr('src', e.target.result).show();
 	 	}
-	 	reader.readAsDataURL(image);
-		});
+	});
 
 	$('#reset_form').click(function() {
 		$('#original_image').show();
