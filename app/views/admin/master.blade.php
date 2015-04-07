@@ -215,6 +215,13 @@
 				</div>
 				<!-- end col -->
 			</div>
+
+			@if(isset($message))
+			<div class="alert alert-success" role="alert">
+				{{$message}}
+			</div>
+			@endif
+			
 			<!-- end row -->
 			@yield('content')
 		</div>

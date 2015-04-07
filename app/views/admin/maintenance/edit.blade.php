@@ -2,13 +2,13 @@
 
 @section('title')
 @parent
-- Clients
+- Maintenance Support
 @stop
 
 @section('breadcrumb')
 @parent
-<li>Client Information</li>
-<li>Add New Client</li>
+<li>Maintenance Support</li>
+<li>Edit Support to Client</li>
 @stop
 
 @section('page_title_icon')
@@ -16,7 +16,7 @@ university
 @stop
 
 @section('page_title')
-Add New Client
+Edit Maintenance Support
 @stop
 
 @section('content')
@@ -35,23 +35,23 @@ Add New Client
 			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-					<h2>Add New Client</h2>									
+					<h2>{{$maintenance->Client->name}}</h2>									
 				</header>
 				<div>
 					<div class="jarviswidget-editbox">						
 					</div>
 					<div class="widget-body no-padding">
-						{{Form::open(array('url' => URL::route('clients.store'), 'method' => 'posts','class'=>'smart-form'))}}						
+						{{Form::open(array('url' => URL::route('maintenance.update'), 'method' => 'posts','class'=>'smart-form'))}}
 						<fieldset>
 							<div class="row">
 								<section class="col col-6">
 									<label class="input"> <i class="icon-prepend fa fa-user"></i>
-										{{ Form::text('name', null, ['placeholder'=>'Company Name']) }}
+										<input type="text" name="name" placeholder="Name">
 									</label>
 								</section>
 								<section class="col col-6">
 									<label class="input"> <i class="icon-prepend fa fa-suitcase"></i>
-										{{ Form::text('reg_no', null, ['placeholder'=>'Registration No.']) }}
+										<input type="text" name="reg_no" placeholder="Registration No.">
 									</label>
 								</section>
 							</div>
@@ -59,12 +59,12 @@ Add New Client
 							<div class="row">
 								<section class="col col-6">
 									<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-										{{ Form::text('office_no', null, ['type'=>'tel', 'placeholder'=>'Office Number', 'data-mask'=>'+(99) 9999 9999']) }}
+										<input type="tel" name="office_no" placeholder="Phone" data-mask="+(99) 9999-9999">
 									</label>
 								</section>
 								<section class="col col-6">
 									<label class="input"> <i class="icon-prepend fa fa-fax"></i>
-										{{ Form::text('fax_no', null, ['type'=>'tel', 'placeholder'=>'Fax Number', 'data-mask'=>'+(99) 9999 9999']) }}
+										<input type="tel" name="fax" placeholder="Fax" data-mask="+(99) 9999-9999">
 									</label>
 								</section>
 							</div>
@@ -73,13 +73,13 @@ Add New Client
 						<fieldset>
 
 							<section>
-								<label for="address" class="textarea">
-									{{ Form::textarea('address', null, ['size'=>'1x3', 'placeholder'=>'Address']) }}
+								<label for="address" class="input">
+									<input type="text" name="address" id="address" placeholder="Address">
 								</label>
 							</section>
 
 							<div class="row">
-								<section class="col col-4">
+								<section class="col col-5">
 									<label class="select">
 										<select name="country">
 											<option value="0" selected="" disabled="">Country</option>
@@ -339,27 +339,27 @@ Add New Client
 
 								<section class="col col-4">
 									<label class="input">
-										{{ Form::text('city', null, ['placeholder'=>'City']) }}
+										<input type="text" name="city" placeholder="City">
 									</label>
 								</section>
 
-								<section class="col col-4">
+								<section class="col col-3">
 									<label class="input">
-										{{ Form::text('postal_code', null, ['placeholder'=>'Postal Code']) }}
+										<input type="text" name="postal_code" placeholder="Post code">
 									</label>
 								</section>
 							</div>
 
 							<section>
-								<label class="textarea">
-									{{ Form::textarea('notes', null, ['size'=>'1x3', 'placeholder'=>'Additional Information']) }}
+								<label class="textarea"> 										
+									<textarea rows="3" name="notes" placeholder="Additional info"></textarea> 
 								</label>
 							</section>
 						</fieldset>
 
 						<footer>
 							<button type="submit" class="btn btn-primary">
-								Add Client
+								Create Client Company
 							</button>
 						</footer>
 						{{Form::close()}}

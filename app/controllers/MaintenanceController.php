@@ -1,6 +1,6 @@
 <?php
 
-class ClientController extends \BaseController {
+class MaintenanceController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,10 +9,10 @@ class ClientController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
-		$client = Client::all();
+		$maintenances = Maintenance::with('Client')->get();
+		$clients = Client::all();
 		$message = Session::get('message');
-		return View::make('admin.client.list')->with('clients',$client)->with('message', $message);
+		return View::make('admin.maintenance.list')->with('maintenances',$maintenances)->with('clients',$clients)->with('message',$message);
 	}
 
 
@@ -23,7 +23,7 @@ class ClientController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('admin.client.create');
+		//
 	}
 
 
@@ -36,30 +36,24 @@ class ClientController extends \BaseController {
 	public function store()
 	{
 		$rules = array(
-			'name' => 'required|unique:clients',
-			'reg_no' => 'unique:clients',
-			'address' => 'required',
-			'country' => 'required',
-			'city' => 'required',
-			'postal_code' => 'required|min:6',
-			'office_no' => 'max:20',						
-			'fax_no' => 'max:20',
+			'client_id' => 'required',
+			'hours_purchased' => 'required',
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
 			return Redirect::back()->withErrors($validator)->withInput();
 		}else{
-			$client = new Client;
-			$client->name = strtoupper((Input::get('name')));
-			$client->reg_no = Input::get('reg_no');
-			$client->address = ucfirst(nl2br(Input::get('address')));
-			$client->country = Input::get('country');
-			$client->city = Input::get('city');
-			$client->postal_code = Input::get('postal_code');
-			$client->office_no = Input::get('office_no');
-			$client->fax_no = Input::get('fax_no');
-			$client->save();
-			return Redirect::route('clients.index')->with('message','Client information successfully saved.');
+			$purchased = Input::get('hours_purchased');
+			$spent = Input::get('hours_spent');
+			$remaining = $purchased - $spent;
+
+			$maintenance = new Maintenance;
+			$maintenance->client_id = Input::get('client_id');
+			$maintenance->hours_purchased = Input::get('hours_purchased');
+			$maintenance->hours_spent = Input::get('hours_spent');
+			$maintenance->hours_remaining = $remaining;
+			$maintenance->save();
+			return Redirect::route('maintenance.index')->with('message','Maintenance support to client successfully saved.');
 		}
 	}
 
@@ -84,10 +78,9 @@ class ClientController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$client = Client::find($id);
-		$contacts = $client->contacts;
-		$message = Session::get('message');
-		return View::make('admin.client.edit')->with('client',$client)->with('contacts',$contacts)->with('message', $message);
+
+		$maintenance = Maintenance::with('Client')->get()->find($id);
+		return View::make('admin.maintenance.edit')->with('maintenance',$maintenance);
 	}
 
 
@@ -111,7 +104,9 @@ class ClientController extends \BaseController {
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
-			return Redirect::route('clients.edit',$id)->withErrors($validator)->withInput();
+			return Redirect::route('clients.edit',$id)
+			->withErrors($validator)
+			->withInput();
 		}else{
 			$client = Client::find($id);
 			$client->name = strtoupper((Input::get('name')));
@@ -123,7 +118,7 @@ class ClientController extends \BaseController {
 			$client->office_no = Input::get('office_no');
 			$client->fax_no = Input::get('fax_no');
 			$client->save();
-			return Redirect::route('clients.edit',$id)->with('message','Client information successfully updated.');
+			return Redirect::route('clients.edit',$id);
 		}
 	}
 
@@ -136,8 +131,8 @@ class ClientController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$client = Client::find($id);
-		$client->delete();
-		return Redirect::route('clients.index')->with('message','Client successfully deleted.');
+		$maintenance = Maintenance::find($id);
+		$maintenance->delete();
+		return Redirect::route('maintenance.index')->with('message','Maintenance support to client successfully deleted.');;
 	}
 }

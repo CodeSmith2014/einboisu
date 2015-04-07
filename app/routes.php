@@ -48,6 +48,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::resource('contacts','ContactController',array('except'=>array('create','show','edit')));
 	Route::resource('systems','SystemController',array('only'=>array('index','update')));
 	Route::resource('invoices','InvoiceController');
+	Route::resource('maintenance','MaintenanceController');
 });
 
 

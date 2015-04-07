@@ -2,50 +2,113 @@
 
 @section('title')
 @parent
-- Contact Personnel
+- Clients
 @stop
 
 @section('breadcrumb')
 @parent
-<li>Contact Personnel</li>
+<li>Maintenance Support</li>
+<li>List Clients</li>
 @stop
 
 @section('page_title_icon')
-female
+desktop
 @stop
 
 @section('page_title')
-List Contact Personnel
+List Clients
 @stop
 
 @section('page_title_right')
+<button data-toggle="modal" data-target="#addMaintenanceModal" class="btn btn-primary btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-plus fa-lg"></i> Add Support to Client</button>
 @stop
 
+
 @section('modals')
-<div class="modal fade" id="deleteContactModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-sm">
+<div class="modal fade" id="addMaintenanceModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
 				<h4 class="modal-title">
-					Delete Contact Personnel
+					Add Maintenance Support to Client
+				</h4>
+			</div>
+			<div class="modal-body no-padding">
+				<form id="smart-form-register" class="smart-form" action="{{URL::route('maintenance.store')}}" method="post">
+					@if($errors->count() > 0)
+					<div class="alert alert-block alert-danger">
+						<ul style="list-style:none;">
+							@foreach($errors->all() as $error)
+							<li>{{$error}}</li>
+							@endforeach
+						</ul>
+					</div>
+					@endif
+					<fieldset>
+
+						<section>
+							<label class="input"> <i class="icon-append fa fa-university"></i>
+								<select name="client_id">
+								@foreach($clients as $client)
+									<option value="{{$client->id}}">{{ $client->name }}</option>
+								@endforeach
+								</select>
+							</label>
+						</section>
+
+						<section>
+							<label class="input"> <i class="icon-append fa fa-clock-o"></i>
+								{{ Form::text('hours_purchased', null, ['placeholder'=>'Hours Purchased']) }}
+							</label>
+						</section>
+
+						<section>
+							<label class="input"> <i class="icon-append fa fa-clock-o"></i>
+								{{ Form::text('hours_spent', null, ['placeholder'=>'Hours Spent']) }}
+							</label>
+						</section>
+
+					</fieldset>
+					<footer>
+						<button type="submit" class="btn btn-primary">
+							Add Support to Client
+						</button>
+					</footer>
+				</form>					
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteMaintenanceModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title">
+					Confirm Delete Maintenance Support to Client
 				</h4>
 			</div>
 			<div class="modal-body">
-				Confirm?
+				Are you sure you want to proceed?
 			</div>
-			{{ Form::open(array('id'=>'confirm-delete-form','class'=>'smart-form','method'=>'DELETE')) }}
-			<footer>
+			<div class="modal-footer">
+				{{ Form::open(array('id'=>'confirm-delete-form','method'=>'DELETE')) }}
 				<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">
 					Cancel
 				</button>
-				<button type="submit" class="btn btn-danger">
-					Remove
+				<button type="submit" class="btn btn-labeled btn-danger">
+					<span class="btn-label">
+						<i class="glyphicon glyphicon-trash"></i>
+					</span>Success
 				</button>
-			</footer>
-			{{Form::close()}}
+				{{Form::close()}}
+			</div>
 		</div>
 	</div>
 </div>
@@ -60,7 +123,7 @@ List Contact Personnel
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Contact Personnel List</h2>
+					<h2>Clients with Maintenance Support List</h2>
 				</header>
 				<div>
 					<div class="jarviswidget-editbox">
@@ -69,43 +132,39 @@ List Contact Personnel
 						<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
 							<thead>			                
 								<tr>
-									<th>Name</th>
-									<th data-hide="phone"><i class="fa fa-fw fa-envelope-o text-muted hidden-md hidden-sm hidden-xs"></i> Email Address</th>
-									<th data-hide="phone,tablet"><i class="fa fa-phone fa-map-marker hidden-md hidden-sm hidden-xs"></i> Mobile No.</th>
-									<th data-hide="phone,tablet">Orphan?</th>
+									<th data-hide="phone">ID</th>
+									<th>Company</th>
+									<th data-hide="phone"><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Purchased</th>
+									<th data-hide="phone"><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Spent</th>
+									<th data-hide="phone"><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Remaining</th>
+									<th>Last Updated</th>
 									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
-								@if($contacts->count() > 0)
-								@foreach($contacts as $contact)
-								<tr>
-									<td>{{$contact->name}}</td>
-									<td>{{$contact->email}}</td>
-									<td>{{$contact->mobile_no}}</td>
-									@if($contact->clients()->count() > 0)
-									<td>No</td>
-									@else
-									<td>Yes</td>
-									@endif
-									<td>
-										<a data-toggle="modal" class="confirm-delete" data-id="{{$contact->id}}" href="#deleteContactModal" title="Delete {{$contact->name}}" >
+
+
+								@foreach($maintenances as $maintenance)
+									<td>{{$maintenance->id}}</td>
+									<td><a href="{{URL::route('clients.edit',$client->id)}}">{{$maintenance->Client->name}}</a></td>
+									<td>{{$maintenance->hours_purchased}}</td>
+									<td>{{$maintenance->hours_spent}}</td>
+									<td>{{$maintenance->hours_remaining}}</td>
+									<td>{{$maintenance->updated_at}}</td>
+									<td style="valign='middle'">
+										<a  href="{{URL::route('maintenance.edit',$maintenance->id)}}" title="Edit" >
+											<button class="btn btn-xs btn-default">
+												<i class="fa fa-pencil"></i>
+											</button>
+										</a>
+										<a data-toggle="modal" class="confirm-delete" data-id="{{$maintenance->id}}" href="#deleteMaintenanceModal" title="Delete" >
 											<button class="btn btn-xs btn-default">
 												<i class="fa fa-times"></i>
 											</button>
 										</a>
 									</td>
-								</tr>
+								</tr>	
 								@endforeach
-								@else
-								<tr>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-								</tr>
-								@endif	
 							</tbody>
 						</table>
 					</div>
@@ -143,6 +202,7 @@ $('#dt_basic').dataTable({
 "t"+
 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
 "autoWidth" : true,
+"iDisplayLength" : 25,
 "preDrawCallback" : function() {
 // Initialize the responsive datatables helper once.
 if (!responsiveHelper_dt_basic) {
@@ -228,10 +288,18 @@ responsiveHelper_datatable_col_reorder.respond();
 <script type="text/javascript">
 $(document).on("click", ".confirm-delete", function () {
 	var id = $(this).data('id');
-	var url = "{{URL::route('contacts.index')}}";
+	var url = "{{URL::route('maintenance.index')}}";
 	var url = url+'/'+id;
 	$("#confirm-delete-form").attr("action",url);
 });
 </script>
+
+@if($errors->count() > 0)
+	<script>
+		$(function() {
+			$('#addMaintenanceModal').modal('show');
+		});
+	</script>
+@endif
 @stop
 <!-- END PAGE CUSTOM SCRIPT -->

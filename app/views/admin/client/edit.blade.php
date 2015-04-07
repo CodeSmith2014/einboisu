@@ -7,15 +7,16 @@
 
 @section('breadcrumb')
 @parent
-<li>Clients</li>
+<li>Client Information</li>
+<li>Edit Client Information</li>
 @stop
 
 @section('page_title_icon')
-female
+university
 @stop
 
 @section('page_title')
-Edit Client Company
+Edit Client Information
 @stop
 
 @section('page_title_right')
@@ -181,8 +182,8 @@ Edit Client Company
 		@if($errors->count() > 0)
 		<div class="alert alert-block alert-danger">
 			<ul>
-				@foreach($errors->all() as $message)
-				<li>{{$message}}</li>
+				@foreach($errors->all() as $error)
+				<li>{{$error}}</li>
 				@endforeach
 			</ul>
 		</div>
