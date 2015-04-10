@@ -45,10 +45,14 @@ Route::group(array('before' => 'auth'), function()
 		));
 	Route::resource('clients','ClientController');
 	Route::post('contacts/ajaxGetContacts','ContactController@ajaxGetContacts');
-	Route::resource('contacts','ContactController',array('except'=>array('create','show','edit')));
-	Route::resource('systems','SystemController',array('only'=>array('index','update')));
+	
+	Route::resource('contacts','ContactController', ['except'=>['create','show','edit']]);
+	
+	Route::resource('maintenance','MaintenanceController', ['except'=>['create','edit']]);
+	Route::resource('onsitesupport','OnsitesupportController', ['except'=>['create','show','edit']]);
+
 	Route::resource('invoices','InvoiceController');
-	Route::resource('maintenance','MaintenanceController');
+	Route::resource('systems','SystemController',array('only'=>array('index','update')));
 });
 
 

@@ -9,7 +9,7 @@ class MaintenanceController extends \BaseController {
 	 */
 	public function index()
 	{
-		$maintenances = Maintenance::with('Client')->get();
+		$maintenances = Maintenance::with('client')->get();
 		$clients = Client::all();
 		$message = Session::get('message');
 		return View::make('admin.maintenance.list')->with('maintenances',$maintenances)->with('clients',$clients)->with('message',$message);
@@ -36,24 +36,20 @@ class MaintenanceController extends \BaseController {
 	public function store()
 	{
 		$rules = array(
-			'client_id' => 'required',
-			'hours_purchased' => 'required',
+			'client_id' => 'required|unique:maintenances',
+			'hours_purchased' => 'required|numeric|min:1',
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
 			return Redirect::back()->withErrors($validator)->withInput();
 		}else{
-			$purchased = Input::get('hours_purchased');
-			$spent = Input::get('hours_spent');
-			$remaining = $purchased - $spent;
-
 			$maintenance = new Maintenance;
-			$maintenance->client_id = Input::get('client_id');
+			$client_id = Input::get('client_id');
+			$maintenance->client_id = $client_id;
 			$maintenance->hours_purchased = Input::get('hours_purchased');
-			$maintenance->hours_spent = Input::get('hours_spent');
-			$maintenance->hours_remaining = $remaining;
 			$maintenance->save();
-			return Redirect::route('maintenance.index')->with('message','Maintenance support to client successfully saved.');
+
+			return Redirect::route('maintenance.index')->with('message','Maintenance support to client successfully added.');
 		}
 	}
 
@@ -66,7 +62,10 @@ class MaintenanceController extends \BaseController {
 	 */
 	public function show($id)
 	{
-
+		$maintenance = Maintenance::find($id);
+		$onsitesupports = Onsitesupport::where('maintenance_id', $id)->get();
+		$message = Session::get('message');
+		return View::make('admin.maintenance.show')->with('maintenance',$maintenance)->with('onsitesupports',$onsitesupports)->with('message',$message);
 	}
 
 
@@ -78,9 +77,7 @@ class MaintenanceController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-
-		$maintenance = Maintenance::with('Client')->get()->find($id);
-		return View::make('admin.maintenance.edit')->with('maintenance',$maintenance);
+	
 	}
 
 
@@ -93,32 +90,21 @@ class MaintenanceController extends \BaseController {
 	public function update($id)
 	{
 		$rules = array(
-			'name' => 'required|unique:clients,name,'."$id",
-			'reg_no' => 'unique:clients,reg_no,'."$id",
-			'address' => 'required',
-			'country' => 'required',
-			'city' => 'required',
-			'postal_code' => 'required|min:6',
-			'office_no' => 'max:20',						
-			'fax_no' => 'max:20',
+			'total_hours_purchased' => 'required|numeric|min:1',
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
-			return Redirect::route('clients.edit',$id)
-			->withErrors($validator)
-			->withInput();
+			return Redirect::route('maintenance.show', $id)->withErrors($validator)->withInput();
 		}else{
-			$client = Client::find($id);
-			$client->name = strtoupper((Input::get('name')));
-			$client->reg_no = Input::get('reg_no');
-			$client->address = ucfirst(nl2br(Input::get('address')));
-			$client->country = Input::get('country');
-			$client->city = Input::get('city');
-			$client->postal_code = Input::get('postal_code');
-			$client->office_no = Input::get('office_no');
-			$client->fax_no = Input::get('fax_no');
-			$client->save();
-			return Redirect::route('clients.edit',$id);
+			$maintenance = Maintenance::find($id);
+			$hours_purchased = Input::get('total_hours_purchased');
+
+			// update hours purchased and hours remaining in maintenance table
+			$maintenance->hours_purchased = $hours_purchased;
+			$maintenance->hours_remaining = $hours_purchased - $maintenance->hours_spent;
+			$maintenance->save();
+
+			return Redirect::route('maintenance.show', $id)->with('message','Total hours purchased successfully updated.');
 		}
 	}
 
@@ -132,7 +118,15 @@ class MaintenanceController extends \BaseController {
 	public function destroy($id)
 	{
 		$maintenance = Maintenance::find($id);
+
+		// delete all onsitesupport entries related to this maintenance id
+		$onsitesupports = Onsitesupport::where('maintenance_id', $id)->get();
+		foreach($onsitesupports as $onsitesupport){
+			$onsitesupport->delete();
+		}
+		
 		$maintenance->delete();
+
 		return Redirect::route('maintenance.index')->with('message','Maintenance support to client successfully deleted.');;
 	}
 }

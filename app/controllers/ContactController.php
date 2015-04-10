@@ -5,7 +5,9 @@ class ContactController extends \BaseController {
 	public function index()
 	{
 		$contacts = Contact::all();
-		return View::make('admin.contact.list')->with('contacts',$contacts);
+		$clients = Client::all();
+		$message = Session::get('message');
+		return View::make('admin.contact.list')->with('contacts',$contacts)->with('clients',$clients)->with('message',$message);
 	}
 
 	/**

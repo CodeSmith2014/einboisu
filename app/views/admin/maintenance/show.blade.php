@@ -2,13 +2,13 @@
 
 @section('title')
 @parent
-Client List - Client Information - E Inboisu
+Client Details - Maintenance Support - E Inboisu
 @stop
 
 @section('breadcrumb')
 @parent
-<li>Client Information</li>
-<li>Client List</li>
+<li>Maintenance Support</li>
+<li>Client Details</li>
 @stop
 
 @section('page_title_icon')
@@ -16,20 +16,23 @@ university
 @stop
 
 @section('sub_navigation')
-	@include('admin.navigation-client')
+	
 @stop
 
 @section('page_title')
-Client List
+Client Details
 @stop
 
 @section('page_title_right')
-<a data-toggle="modal" data-target="#addClientModal" class="btn btn-primary btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-plus fa-lg"></i> Add New Client</a>
+<a href="{{URL::route('maintenance.index')}}" class="btn btn-danger btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-circle-arrow-up fa-lg"></i>Back</a>
+<a data-toggle="modal" class="add-modal-onsitesupport btn btn-primary btn-lg pull-right header-btn" data-mid="{{$maintenance->id}}" href="#addOnsitesupportModal"><i class="fa fa-plus fa-lg"></i> Add Onsite Support</a>
 @stop
 
 @section('modals')
-	@include('admin.client.create-modal')
-	@include('admin.client.delete-modal')
+	@include('admin.maintenance.edit-modal')
+	@include('admin.onsitesupport.create-modal')
+	@include('admin.onsitesupport.edit-modal')
+	@include('admin.onsitesupport.delete-modal')
 @stop
 
 @section('content')
@@ -47,6 +50,45 @@ Client List
 	</article>
 </div>
 <section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+				<header>
+					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+					<h2>{{$maintenance->client->name}}</h2>
+				</header>
+				<div class="widget-body">
+					<form id="company-form" class="smart-form" novalidate="novalidate">
+						<fieldset>
+							<div class="row">
+								<section class="col col-4">
+									<label class="label">Total Hours Purchased</label>
+									<span>{{$maintenance->hours_purchased}}</span>
+								</section>
+								<section class="col col-4">
+									<label class="label">Total Hours Spent</label>
+									<span>{{$maintenance->hours_spent}}</span>
+								</section>
+								<section class="col col-4">
+									<label class="label">Total Hours Remaining</label>
+									<span>{{$maintenance->hours_remaining}}</span>
+								</section>
+							</div>
+						</fieldset>
+						<footer>
+							<a data-toggle="modal" class="edit-modal-maintenance btn btn-primary btn-lg pull-right header-btn" data-mid="{{$maintenance->id}}" data-hourspurchased="{{$maintenance->hours_purchased}}" href="#editMaintenanceModal">Edit Total Hours Purchased</a>
+						</footer>
+					</form>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<section>
+
+
+
+<section id="widget-grid" class="">
 	<!-- row -->
 	<div class="row">
 		<!-- NEW WIDGET START -->
@@ -54,42 +96,40 @@ Client List
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>List of Clients</h2>
+					<h2>List of Onsite Support</h2>
 				</header>
 				<div>
 					<div class="jarviswidget-editbox">
 					</div>
 					<div class="widget-body no-padding">
 						<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
-							<thead>			                
+							<thead>
 								<tr>
-									<th data-hide="phone">ID</th>
 									<th>Company</th>
-									<th><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Phone</th>
-									<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Address</th>
+									<th><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Spent</th>
+									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Onsite Date</th>
 									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($clients as $client)
+								@foreach($onsitesupports as $onsitesupport)
 								<tr>
-									<td>{{$client->id}}</td>
-									<td><a href="{{URL::route('clients.show',$client->id)}}" title="Edit" >{{$client->name}}</a></td> 
-									<td>{{$client->office_no}}</td>
-									<td>{{$client->address}} {{$client->country}} {{$client->postal_code}}</td>
+									<td>{{$onsitesupport->maintenance->client->name}}</td>
+									<td>{{$onsitesupport->hours_spent}}</td>
+									<td>{{$onsitesupport->onsite_date}}</td>
 									<td style="valign='middle'">
-										<a  href="{{URL::route('clients.show',$client->id)}}" title="Edit" >
+										<a data-toggle="modal" class="edit-modal-onsitesupport" data-mid="{{$onsitesupport->maintenance_id}}" data-oid="{{$onsitesupport->id}}" data-hoursspent='{{$onsitesupport->hours_spent}}' data-onsitedate='{{$onsitesupport->onsite_date}}' href="#editOnsitesupportModal" title="Edit" >
 											<button class="btn btn-xs btn-default">
 												<i class="fa fa-pencil"></i>
 											</button>
 										</a>
-										<a data-toggle="modal" class="confirm-delete" data-id="{{$client->id}}" href="#deleteClientModal" title="Delete" >
+										<a data-toggle="modal" class="confirm-delete" data-mid="{{$onsitesupport->maintenance_id}}" data-oid="{{$onsitesupport->id}}" href="#deleteOnsitesupportModal" title="Delete" >
 											<button class="btn btn-xs btn-default">
 												<i class="fa fa-times"></i>
 											</button>
 										</a>
 									</td>
-								</tr>	
+								</tr>
 								@endforeach
 							</tbody>
 						</table>
@@ -101,17 +141,15 @@ Client List
 </section>
 @stop
 
-<!-- PAGE SCRIPTS -->
 @section('page_scripts')
+{{HTML::script("/assets/js/plugin/jquery-form/jquery-form.min.js");}}
 {{HTML::script("/assets/js/plugin/datatables/jquery.dataTables.min.js");}}
 {{HTML::script("/assets/js/plugin/datatables/dataTables.colVis.min.js");}}
 {{HTML::script("/assets/js/plugin/datatables/dataTables.tableTools.min.js");}}
 {{HTML::script("/assets/js/plugin/datatables/dataTables.bootstrap.min.js");}}
 {{HTML::script("/assets/js/plugin/datatable-responsive/datatables.responsive.min.js");}}
 @stop
-<!-- END PAGE SCRIPTS -->
 
-<!-- DOCUMENT READY -->
 @section('document_ready')
 var responsiveHelper_dt_basic = undefined;
 var responsiveHelper_datatable_fixed_column = undefined;
@@ -207,17 +245,46 @@ responsiveHelper_datatable_col_reorder.respond();
 
 /* END COLUMN SHOW - HIDE */
 @stop
-<!-- END DOCUMENT READY -->
 
-<!-- PAGE CUSTOM SCRIPT -->
 @section('javascript')
-<script type="text/javascript">
+<script>
+$(document).on("click", ".edit-modal-maintenance", function () {
+	var mid 			= $(this).data('mid');
+	var hours_purchased = $(this).data('hourspurchased');
+	var url 			= "{{URL::route('maintenance.index')}}" + "/" + mid;
+
+	$("#editMaintenanceModal #edit-modal-maintenance").attr("action",url);
+	$("#editMaintenanceModal #maintenance_id").attr("value",mid);
+	$("#editMaintenanceModal #total_hours_purchased").attr("value",hours_purchased);
+});
+
+$(document).on("click", ".add-modal-onsitesupport", function () {
+	var mid 			= $(this).data('mid');
+	var url 			= "{{URL::route('onsitesupport.index')}}";
+
+	$("#addOnsitesupportModal #add-modal-onsitesupport").attr("action",url);
+	$("#addOnsitesupportModal #maintenance_id").attr("value",mid);
+});
+
+$(document).on("click", ".edit-modal-onsitesupport", function () {
+	var mid 			= $(this).data('mid');
+	var oid 			= $(this).data('oid');
+	var hours_spent 	= $(this).data('hoursspent');
+	var onsite_date 	= $(this).data('onsitedate');
+	var url 			= "{{URL::route('onsitesupport.index')}}" + "/" + oid;
+
+	$("#editOnsitesupportModal #edit-modal-onsitesupport").attr("action",url);
+	$("#editOnsitesupportModal #maintenance_id").attr("value",mid);
+	$("#editOnsitesupportModal #hours_spent").attr("value",hours_spent);
+	$("#editOnsitesupportModal #onsite_date").attr("value",onsite_date);
+});
+
 $(document).on("click", ".confirm-delete", function () {
-	var id = $(this).data('id');
-	var url = "{{URL::route('clients.index')}}";
-	var url = url+'/'+id;
-	$("#confirm-delete-form").attr("action",url);
+	var mid 			= $(this).data('mid');
+	var oid 			= $(this).data('oid');
+	var url 			= "{{URL::route('onsitesupport.index')}}" + "/" + oid;
+
+	$("#delete-modal-onsitesupport").attr("action",url);
 });
 </script>
 @stop
-<!-- END PAGE CUSTOM SCRIPT -->

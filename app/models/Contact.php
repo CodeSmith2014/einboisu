@@ -1,6 +1,6 @@
 <?php
 class Contact extends Eloquent{
-	public function Clients(){
+	public function clients(){
 		return $this->belongsToMany('Client');
 	}
 

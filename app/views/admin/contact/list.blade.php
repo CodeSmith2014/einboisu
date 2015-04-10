@@ -2,53 +2,33 @@
 
 @section('title')
 @parent
-- Contact Personnel
+Contact Personnel List - Client Information - E Inboisu
 @stop
 
 @section('breadcrumb')
 @parent
-<li>Contact Personnel</li>
+<li>Client Information</li>
+<li>Contact Personnel List</li>
 @stop
 
 @section('page_title_icon')
 female
 @stop
 
+@section('sub_navigation')
+	@include('admin.navigation-client')
+@stop
+
 @section('page_title')
-List Contact Personnel
+Contact Personnel List
 @stop
 
 @section('page_title_right')
+
 @stop
 
 @section('modals')
-<div class="modal fade" id="deleteContactModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title">
-					Delete Contact Personnel
-				</h4>
-			</div>
-			<div class="modal-body">
-				Confirm?
-			</div>
-			{{ Form::open(array('id'=>'confirm-delete-form','class'=>'smart-form','method'=>'DELETE')) }}
-			<footer>
-				<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">
-					Cancel
-				</button>
-				<button type="submit" class="btn btn-danger">
-					Remove
-				</button>
-			</footer>
-			{{Form::close()}}
-		</div>
-	</div>
-</div>
+
 @stop
 
 @section('content')
@@ -60,7 +40,7 @@ List Contact Personnel
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Contact Personnel List</h2>
+					<h2>List of Contact Personnel</h2>
 				</header>
 				<div>
 					<div class="jarviswidget-editbox">
@@ -69,43 +49,26 @@ List Contact Personnel
 						<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
 							<thead>			                
 								<tr>
-									<th>Name</th>
-									<th data-hide="phone"><i class="fa fa-fw fa-envelope-o text-muted hidden-md hidden-sm hidden-xs"></i> Email Address</th>
-									<th data-hide="phone,tablet"><i class="fa fa-phone fa-map-marker hidden-md hidden-sm hidden-xs"></i> Mobile No.</th>
-									<th data-hide="phone,tablet">Orphan?</th>
-									<th>Actions</th>
+									<th>Contact Personnel Name</th>
+									<th><i class="fa fa-fw fa-envelope-o text-muted hidden-md hidden-sm hidden-xs"></i> Email Address</th>
+									<th><i class="fa fa-phone fa-map-marker hidden-md hidden-sm hidden-xs"></i> Mobile No.</th>
+									<th data-hide="phone,tablet">Company</th>
 								</tr>
 							</thead>
 							<tbody>
-								@if($contacts->count() > 0)
 								@foreach($contacts as $contact)
 								<tr>
 									<td>{{$contact->name}}</td>
 									<td>{{$contact->email}}</td>
 									<td>{{$contact->mobile_no}}</td>
-									@if($contact->clients()->count() > 0)
-									<td>No</td>
+									@if($contact->clients->count() > 0)
+									<td>{{$contact->clients[0]->name}}</td>
 									@else
 									<td>Yes</td>
+
 									@endif
-									<td>
-										<a data-toggle="modal" class="confirm-delete" data-id="{{$contact->id}}" href="#deleteContactModal" title="Delete {{$contact->name}}" >
-											<button class="btn btn-xs btn-default">
-												<i class="fa fa-times"></i>
-											</button>
-										</a>
-									</td>
 								</tr>
 								@endforeach
-								@else
-								<tr>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-									<td>No Contact Avaliable</td>
-								</tr>
-								@endif	
 							</tbody>
 						</table>
 					</div>
@@ -225,13 +188,6 @@ responsiveHelper_datatable_col_reorder.respond();
 
 <!-- PAGE CUSTOM SCRIPT -->
 @section('javascript')
-<script type="text/javascript">
-$(document).on("click", ".confirm-delete", function () {
-	var id = $(this).data('id');
-	var url = "{{URL::route('contacts.index')}}";
-	var url = url+'/'+id;
-	$("#confirm-delete-form").attr("action",url);
-});
-</script>
+
 @stop
 <!-- END PAGE CUSTOM SCRIPT -->

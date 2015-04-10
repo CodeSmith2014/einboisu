@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		@section('title')
-		E Iboisu
+		
 		@show
 	</title>
 	<meta name="description" content="">
@@ -193,15 +193,18 @@
 		</div>
 		<!-- END RIBBON -->
 
-
-
 		<!-- MAIN CONTENT -->
 		<div id="content">
+			<div class="row">
+				<div class="col-lg-12">
+					@yield('sub_navigation')
+				</div>
+			</div>
 			<!-- row -->
 			<div class="row">
 				<!-- col -->
 				<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-					<h1 class="page-title txt-color-blueDark">
+					<h1 class="page-title txt-color-blueDark visible-xs visible-sm visible-md visible-lg">
 						<i class="fa-fw fa fa-@yield('page_title_icon')"></i>
 						@yield('page_title')
 					</h1>

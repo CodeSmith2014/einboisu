@@ -12,22 +12,21 @@
 			<li>
 				<a href="#"><i class="fa fa-lg fa-fw fa-university"></i> <span class="menu-item-parent">Client Information</span></a>
 				<ul>
-					<li><a href="{{URL::route('clients.index')}}"><i class="fa fa-list"></i> List Clients</a></li>
-					<li><a href="{{URL::route('clients.create')}}"><i class="fa fa-plus-square"></i> Add New Client</a></li>
-					<li><a href="{{URL::route('contacts.index')}}"><i class="fa fa-female"></i> List Contact Personnel</a></li>
+					<li><a href="{{URL::route('clients.index')}}"><i class="fa fa-list"></i> Client List</a></li>
+					<li><a href="{{URL::route('contacts.index')}}"><i class="fa fa-list"></i> Contact Personnel List</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i> <span class="menu-item-parent">Maintenance Support</span></a>
+				<ul>
+					<li><a href="{{URL::route('maintenance.index')}}"><i class="fa fa-list"></i> Client List</a></li>
+					<li><a href="{{URL::route('onsitesupport.index')}}"><i class="fa fa-list"></i> Onsite Support List</a></li>
 				</ul>
 			</li>
 			<li>
 				<a href="#"><i class="fa fa-lg fa-fw fa-taxi"></i> <span class="menu-item-parent">Invoices</span></a>
 				<ul>
 					<li><a href="{{URL::route('invoices.index')}}"><i class="fa fa-list"></i> List Invoices</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i> <span class="menu-item-parent">Maintenance Support</span></a>
-				<ul>
-					<li><a href="{{URL::route('maintenance.index')}}"><i class="fa fa-list"></i> List Clients</a></li>
-					<li><a href="{{URL::route('maintenance.create')}}"><i class="fa fa-plus-square"></i> Add Support to Client</a></li>
 				</ul>
 			</li>
 			<li>

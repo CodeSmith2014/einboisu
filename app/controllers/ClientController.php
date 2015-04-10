@@ -9,10 +9,9 @@ class ClientController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
-		$client = Client::all();
+		$clients = Client::all();
 		$message = Session::get('message');
-		return View::make('admin.client.list')->with('clients',$client)->with('message', $message);
+		return View::make('admin.client.list')->with('clients',$clients)->with('message', $message);
 	}
 
 
@@ -23,7 +22,7 @@ class ClientController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('admin.client.create');
+
 	}
 
 
@@ -41,7 +40,7 @@ class ClientController extends \BaseController {
 			'address' => 'required',
 			'country' => 'required',
 			'city' => 'required',
-			'postal_code' => 'required|min:6',
+			'postal_code' => 'required|min:6|numeric',
 			'office_no' => 'max:20',						
 			'fax_no' => 'max:20',
 			);
@@ -59,7 +58,7 @@ class ClientController extends \BaseController {
 			$client->office_no = Input::get('office_no');
 			$client->fax_no = Input::get('fax_no');
 			$client->save();
-			return Redirect::route('clients.index')->with('message','Client information successfully saved.');
+			return Redirect::route('clients.index')->with('message','Client successfully added.');
 		}
 	}
 
@@ -72,7 +71,9 @@ class ClientController extends \BaseController {
 	 */
 	public function show($id)
 	{
-
+		$client = Client::find($id);
+		$contacts = $client->contacts;
+		return View::make('admin.client.show')->with('client',$client)->with('contacts',$contacts);
 	}
 
 

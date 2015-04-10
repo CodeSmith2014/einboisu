@@ -2,34 +2,33 @@
 
 @section('title')
 @parent
-Client List - Client Information - E Inboisu
+Onsite Support List - Maintenance Support - E Inboisu
 @stop
 
 @section('breadcrumb')
 @parent
-<li>Client Information</li>
-<li>Client List</li>
+<li>Maintenance Support</li>
+<li>Onsite Support List</li>
 @stop
 
 @section('page_title_icon')
-university
+building
 @stop
 
 @section('sub_navigation')
-	@include('admin.navigation-client')
+	@include('admin.navigation-maintenance')
 @stop
 
 @section('page_title')
-Client List
+Onsite Support List
 @stop
 
 @section('page_title_right')
-<a data-toggle="modal" data-target="#addClientModal" class="btn btn-primary btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-plus fa-lg"></i> Add New Client</a>
+
 @stop
 
 @section('modals')
-	@include('admin.client.create-modal')
-	@include('admin.client.delete-modal')
+
 @stop
 
 @section('content')
@@ -54,7 +53,7 @@ Client List
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>List of Clients</h2>
+					<h2>List of Onsite Support</h2>
 				</header>
 				<div>
 					<div class="jarviswidget-editbox">
@@ -63,33 +62,18 @@ Client List
 						<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
 							<thead>			                
 								<tr>
-									<th data-hide="phone">ID</th>
 									<th>Company</th>
-									<th><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Phone</th>
-									<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Address</th>
-									<th>Actions</th>
+									<th><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Spent</th>
+									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Onsite Date</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($clients as $client)
+								@foreach($onsitesupports as $onsitesupport)
 								<tr>
-									<td>{{$client->id}}</td>
-									<td><a href="{{URL::route('clients.show',$client->id)}}" title="Edit" >{{$client->name}}</a></td> 
-									<td>{{$client->office_no}}</td>
-									<td>{{$client->address}} {{$client->country}} {{$client->postal_code}}</td>
-									<td style="valign='middle'">
-										<a  href="{{URL::route('clients.show',$client->id)}}" title="Edit" >
-											<button class="btn btn-xs btn-default">
-												<i class="fa fa-pencil"></i>
-											</button>
-										</a>
-										<a data-toggle="modal" class="confirm-delete" data-id="{{$client->id}}" href="#deleteClientModal" title="Delete" >
-											<button class="btn btn-xs btn-default">
-												<i class="fa fa-times"></i>
-											</button>
-										</a>
-									</td>
-								</tr>	
+									<td><a href="{{url::route('maintenance.show', array($onsitesupport->maintenance_id))}}" title="Edit" >{{$onsitesupport->maintenance->client->name}}</td>
+									<td>{{$onsitesupport->hours_spent}}</td>
+									<td>{{$onsitesupport->onsite_date}}</td>
+								</tr>
 								@endforeach
 							</tbody>
 						</table>
@@ -211,13 +195,6 @@ responsiveHelper_datatable_col_reorder.respond();
 
 <!-- PAGE CUSTOM SCRIPT -->
 @section('javascript')
-<script type="text/javascript">
-$(document).on("click", ".confirm-delete", function () {
-	var id = $(this).data('id');
-	var url = "{{URL::route('clients.index')}}";
-	var url = url+'/'+id;
-	$("#confirm-delete-form").attr("action",url);
-});
-</script>
+
 @stop
 <!-- END PAGE CUSTOM SCRIPT -->

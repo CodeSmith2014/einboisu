@@ -1,10 +1,11 @@
 <?php
 class Client extends Eloquent{
-	public function Contacts(){
+	public function contacts(){
 		return $this->belongsToMany('Contact');
 	}
 
-	public function Maintenance(){
+	public function maintenance(){
 		return $this->hasOne('Maintenance');
 	}
+
 }

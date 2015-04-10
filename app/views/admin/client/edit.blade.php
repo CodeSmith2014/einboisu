@@ -8,11 +8,15 @@
 @section('breadcrumb')
 @parent
 <li>Client Information</li>
-<li>Edit Client Information</li>
+<li>Edit Client</li>
 @stop
 
 @section('page_title_icon')
 university
+@stop
+
+@section('sub_navigation')
+	
 @stop
 
 @section('page_title')

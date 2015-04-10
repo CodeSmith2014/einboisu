@@ -2,119 +2,50 @@
 
 @section('title')
 @parent
-- Clients
+Client List - Maintenance Support - E Inboisu
 @stop
 
 @section('breadcrumb')
 @parent
 <li>Maintenance Support</li>
-<li>List Clients</li>
+<li>Client List</li>
 @stop
 
 @section('page_title_icon')
 desktop
 @stop
 
+@section('sub_navigation')
+	@include('admin.navigation-maintenance')
+@stop
+
 @section('page_title')
-List Clients
+Client List
 @stop
 
 @section('page_title_right')
-<button data-toggle="modal" data-target="#addMaintenanceModal" class="btn btn-primary btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-plus fa-lg"></i> Add Support to Client</button>
+<a data-toggle="modal" href="#addMaintenanceModal" class="btn btn-primary btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-plus fa-lg"></i> Add Support to Client</a>
 @stop
 
-
 @section('modals')
-<div class="modal fade" id="addMaintenanceModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title">
-					Add Maintenance Support to Client
-				</h4>
-			</div>
-			<div class="modal-body no-padding">
-				<form id="smart-form-register" class="smart-form" action="{{URL::route('maintenance.store')}}" method="post">
-					@if($errors->count() > 0)
-					<div class="alert alert-block alert-danger">
-						<ul style="list-style:none;">
-							@foreach($errors->all() as $error)
-							<li>{{$error}}</li>
-							@endforeach
-						</ul>
-					</div>
-					@endif
-					<fieldset>
-
-						<section>
-							<label class="input"> <i class="icon-append fa fa-university"></i>
-								<select name="client_id">
-								@foreach($clients as $client)
-									<option value="{{$client->id}}">{{ $client->name }}</option>
-								@endforeach
-								</select>
-							</label>
-						</section>
-
-						<section>
-							<label class="input"> <i class="icon-append fa fa-clock-o"></i>
-								{{ Form::text('hours_purchased', null, ['placeholder'=>'Hours Purchased']) }}
-							</label>
-						</section>
-
-						<section>
-							<label class="input"> <i class="icon-append fa fa-clock-o"></i>
-								{{ Form::text('hours_spent', null, ['placeholder'=>'Hours Spent']) }}
-							</label>
-						</section>
-
-					</fieldset>
-					<footer>
-						<button type="submit" class="btn btn-primary">
-							Add Support to Client
-						</button>
-					</footer>
-				</form>					
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="deleteMaintenanceModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title">
-					Confirm Delete Maintenance Support to Client
-				</h4>
-			</div>
-			<div class="modal-body">
-				Are you sure you want to proceed?
-			</div>
-			<div class="modal-footer">
-				{{ Form::open(array('id'=>'confirm-delete-form','method'=>'DELETE')) }}
-				<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">
-					Cancel
-				</button>
-				<button type="submit" class="btn btn-labeled btn-danger">
-					<span class="btn-label">
-						<i class="glyphicon glyphicon-trash"></i>
-					</span>Success
-				</button>
-				{{Form::close()}}
-			</div>
-		</div>
-	</div>
-</div>
+@include('admin.maintenance.create-modal')
+@include('admin.maintenance.delete-modal')
 @stop
 
 @section('content')
+<div class="row">
+	<article class="col-sm-12 col-md-12 col-lg-12">
+		@if($errors->count() > 0)
+		<div class="alert alert-block alert-danger">
+			<ul>
+				@foreach($errors->all() as $error)
+				<li>{{$error}}</li>
+				@endforeach
+			</ul>
+		</div>
+		@endif
+	</article>
+</div>
 <section id="widget-grid" class="">
 	<!-- row -->
 	<div class="row">
@@ -123,7 +54,7 @@ List Clients
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Clients with Maintenance Support List</h2>
+					<h2>List of Clients with Maintenance Support</h2>
 				</header>
 				<div>
 					<div class="jarviswidget-editbox">
@@ -132,27 +63,22 @@ List Clients
 						<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
 							<thead>			                
 								<tr>
-									<th data-hide="phone">ID</th>
 									<th>Company</th>
-									<th data-hide="phone"><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Purchased</th>
-									<th data-hide="phone"><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Spent</th>
-									<th data-hide="phone"><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Remaining</th>
-									<th>Last Updated</th>
+									<th><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Purchased</th>
+									<th><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Spent</th>
+									<th><i class="fa fa-fw fa-clock-o text-muted hidden-md hidden-sm hidden-xs"></i> Hours Remaining</th>
 									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
-
-
 								@foreach($maintenances as $maintenance)
-									<td>{{$maintenance->id}}</td>
-									<td><a href="{{URL::route('clients.edit',$client->id)}}">{{$maintenance->Client->name}}</a></td>
+								<tr>
+									<td><a href="{{url::route('maintenance.show', array($maintenance->id))}}" title="Edit" >{{$maintenance->client->name}}</a></td>
 									<td>{{$maintenance->hours_purchased}}</td>
 									<td>{{$maintenance->hours_spent}}</td>
 									<td>{{$maintenance->hours_remaining}}</td>
-									<td>{{$maintenance->updated_at}}</td>
 									<td style="valign='middle'">
-										<a  href="{{URL::route('maintenance.edit',$maintenance->id)}}" title="Edit" >
+										<a href="{{url::route('maintenance.show', array($maintenance->id))}}" title="Edit" >
 											<button class="btn btn-xs btn-default">
 												<i class="fa fa-pencil"></i>
 											</button>
@@ -163,7 +89,7 @@ List Clients
 											</button>
 										</a>
 									</td>
-								</tr>	
+								</tr>
 								@endforeach
 							</tbody>
 						</table>
@@ -287,19 +213,11 @@ responsiveHelper_datatable_col_reorder.respond();
 @section('javascript')
 <script type="text/javascript">
 $(document).on("click", ".confirm-delete", function () {
-	var id = $(this).data('id');
-	var url = "{{URL::route('maintenance.index')}}";
-	var url = url+'/'+id;
-	$("#confirm-delete-form").attr("action",url);
+	var id 				= $(this).data('id');
+	var url 			= "{{URL::route('maintenance.index')}}" + "/" + id;
+
+	$("#delete-modal-maintenance").attr("action",url);
 });
 </script>
-
-@if($errors->count() > 0)
-	<script>
-		$(function() {
-			$('#addMaintenanceModal').modal('show');
-		});
-	</script>
-@endif
 @stop
 <!-- END PAGE CUSTOM SCRIPT -->
