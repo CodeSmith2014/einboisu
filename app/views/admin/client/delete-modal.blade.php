@@ -13,7 +13,7 @@
 				Are you sure you want to proceed?
 			</div>
 			<div class="modal-footer">
-				{{ Form::open(array('id'=>'confirm-delete-form','method'=>'DELETE')) }}
+				{{ Form::open(['id'=>'delete-modal-client','method'=>'DELETE']) }}
 				<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">
 					Cancel
 				</button>

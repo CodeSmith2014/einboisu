@@ -13,46 +13,64 @@
 				{{ Form::open(['id'=>'edit-modal-client', 'class'=>'smart-form', 'method'=>'PUT']) }}
 					<fieldset>
 						<div class="row">
-							<section class="col col-6">
+							<section class="col col-xs-12 col-sm-8 col-md-8 col-lg-8">
 								<label for="name" class="label">Company Name</label>
-								<label class="input"> <i class="icon-append fa fa-university"></i>
-									<input type="text" name="name" id="name" placeholder="Company Name">
+								@if ($errors->has('name'))		<label class="input state-error"> <i class="icon-append fa fa-university"></i>
+								@else							<label class="input"> <i class="icon-append fa fa-university"></i>
+								@endif
+									{{ Form::text('name', null, ['id'=>'name', 'placeholder'=>'Company Name']) }}
 								</label>
+								@if ($errors->has('name')) <div class="note note-error">{{ $errors->first('name') }}</div> @endif
 							</section>
-							<section class="col col-6">
+							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
 								<label for="reg_no" class="label">Registration No.</label>
-								<label class="input"> <i class="icon-append fa fa-briefcase"></i>
-									{{ Form::text('reg_no', '', ['id'=>'reg_no', 'placeholder'=>'Registration No.']) }}
+								@if ($errors->has('reg_no'))	<label class="input state-error"> <i class="icon-append fa fa-briefcase"></i>
+								@else 							<label class="input"> <i class="icon-append fa fa-briefcase"></i>
+								@endif
+									{{ Form::text('reg_no', null, ['id'=>'reg_no', 'placeholder'=>'Registration No.']) }}
 								</label>
+								@if ($errors->has('reg_no')) <div class="note note-error">{{ $errors->first('reg_no') }}</div> @endif
 							</section>
-
-
-
 						</div>
 						<div class="row">
-							<section class="col col-6">
-								<label class="input"> <i class="icon-append fa fa-phone"></i>
+							<section class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<label for="office_no" class="label">Office No.</label>
+								@if ($errors->has('office_no')) <label class="input state-error"> <i class="icon-append fa fa-phone"></i>
+								@else 							<label class="input"> <i class="icon-append fa fa-phone"></i>
+								@endif
 									{{ Form::text('office_no', null, ['id'=>'office_no', 'type'=>'tel', 'placeholder'=>'Office Number', 'data-mask'=>'+(99) 9999 9999']) }}
 								</label>
+								@if ($errors->has('office_no')) <div class="note note-error">{{ $errors->first('office_no') }}</div> @endif
 							</section>
-							<section class="col col-6">
-								<label class="input"> <i class="icon-append fa fa-fax"></i>
+							<section class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<label for="fax_no" class="label">Fax No.</label>
+								@if ($errors->has('fax_no'))	<label class="input state-error"> <i class="icon-append fa fa-fax"></i>
+								@else 							<label class="input"> <i class="icon-append fa fa-fax"></i>
+								@endif
 									{{ Form::text('fax_no', null, ['id'=>'fax_no', 'type'=>'tel', 'placeholder'=>'Fax Number', 'data-mask'=>'+(99) 9999 9999']) }}
 								</label>
+								@if ($errors->has('fax_no')) <div class="note note-error">{{ $errors->first('fax_no') }}</div> @endif
 							</section>
 						</div>
 					</fieldset>
 					<fieldset>
 						<section>
-							<label class="textarea">
+							<label for="address" class="label">Address</label>
+							@if ($errors->has('address'))		<label class="textarea state-error">
+							@else 								<label class="textarea">
+							@endif
 								{{ Form::textarea('address', null, ['id'=>'address', 'class'=>'custom-scroll', 'size'=>'1x3', 'placeholder'=>'Address']) }}
 							</label>
+							@if ($errors->has('address')) <div class="note note-error">{{ $errors->first('address') }}</div> @endif
 						</section>
 						<div class="row">
-							<section class="col col-4">
-								<label class="select">
+							<section class="col col-xs-12 col-sm-5 col-md-5 col-lg-5">
+								<label for="country" class="label">Country</label>
+								@if ($errors->has('country'))	<label class="select state-error">
+								@else 							<label class="select">
+								@endif
 									<select name="country" id='country'>
-										<option value="0" selected="" disabled="">Country</option>
+										<option value="0" disabled="">Country</option>
 										<option value="Aaland Islands">Aaland Islands</option>
 										<option value="Afghanistan">Afghanistan</option>
 										<option value="Albania">Albania</option>
@@ -305,27 +323,40 @@
 									</select>
 									<i></i>
 								</label>
+								@if ($errors->has('country')) <div class="note note-error">{{ $errors->first('country') }}</div> @endif
 							</section>
-							<section class="col col-4">
-								<label class="input">
+							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								<label for="city" class="label">City</label>
+								@if ($errors->has('city'))		<label class="input state-error">
+								@else 							<label class="input">
+								@endif
 									{{ Form::text('city', null, ['id'=>'city', 'placeholder'=>'City']) }}
 								</label>
+								@if ($errors->has('city')) <div class="note note-error">{{ $errors->first('city') }}</div> @endif
 							</section>
-							<section class="col col-4">
-								<label class="input">
+							<section class="col col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								<label for="postal_code" class="label">Postal Code</label>
+								@if ($errors->has('postal_code'))	<label class="input state-error">
+								@else 								<label class="input">
+								@endif
 									{{ Form::text('postal_code', null, ['id'=>'postal_code', 'placeholder'=>'Postal Code']) }}
 								</label>
+								@if ($errors->has('postal_code')) <div class="note note-error">{{ $errors->first('postal_code') }}</div> @endif
 							</section>
 						</div>
 						<section>
-							<label class="textarea">
-								{{ Form::textarea('notes', null, ['id'=>'notes', 'size'=>'1x3', 'placeholder'=>'Additional Information']) }}
+							<label for="notes" class="label">Notes</label>
+							@if ($errors->has('notes'))			<label class="textarea state-error">
+							@else 								<label class="textarea">
+							@endif
+								{{ Form::textarea('notes', null, ['id'=>'notes', 'class'=>'custom-scroll', 'size'=>'1x3', 'placeholder'=>'Additional Information']) }}
 							</label>
+							@if ($errors->has('notes')) <div class="note note-error">{{ $errors->first('notes') }}</div> @endif
 						</section>
 					</fieldset>
 					<footer>
 						<button type="submit" class="btn btn-primary">
-							Add New Client
+							Update
 						</button>
 					</footer>
 				{{Form::close()}}

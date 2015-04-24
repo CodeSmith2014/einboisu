@@ -6,54 +6,44 @@
 					&times;
 				</button>
 				<h4 class="modal-title">
-					Add Contact to Client
+					Add Contact Personnel
 				</h4>
 			</div>
 			<div class="modal-body no-padding">
-				<form id="smart-form-register" class="smart-form" action="{{URL::route('contacts.store')}}" method="post">
-					@if($errors->count() > 0)
-					<div class="alert alert-block alert-danger">
-						<ul style="list-style:none;">
-							@foreach($errors->all() as $error)
-							<li>{{$error}}</li>
-							@endforeach
-						</ul>
-					</div>
-					@endif
+				{{ Form::open(['id'=>'add-modal-contact', 'class'=>'smart-form', 'method'=>'POST']) }}
 					<fieldset>
 						<section>
-							<label class="input"> <i class="icon-append fa fa-university"></i>
-								<select name="client_id">
-								@foreach($clients as $client)
-									<option value="{{$client->id}}">{{ $client->name }}</option>
-								@endforeach
-								</select>
+							{{ Form::hidden('client_id', null, ['id'=>'client_id'])}}
+							@if ($errors->has('name'))		<label class="input state-error"> <i class="icon-append fa fa-user"></i>
+							@else 							<label class="input"> <i class="icon-append fa fa-user"></i>
+							@endif
+								{{ Form::text('name', null, ['placeholder'=>'Name'])}}
 							</label>
+							@if ($errors->has('name')) <div class="note note-error">{{ $errors->first('name') }}</div> @endif
 						</section>
 						<section>
-							<label class="input"> <i class="icon-append fa fa-user"></i>
-								{{ Form::text('name', null, ['placeholder'=>'Name']) }}
+							@if ($errors->has('email'))		<label class="input state-error"> <i class="icon-append fa fa-envelope-o"></i>
+							@else 							<label class="input"> <i class="icon-append fa fa-envelope-o"></i>
+							@endif
+								{{ Form::email('email', null, ['placeholder'=>'Email'])}}
 							</label>
+							@if ($errors->has('email')) <div class="note note-error">{{ $errors->first('email') }}</div> @endif
 						</section>
-
 						<section>
-							<label class="input"> <i class="icon-append fa fa-envelope-o"></i>
-								{{ Form::text('email', null, ['placeholder'=>'Email']) }}
-							</label>
-						</section>
-
-						<section>
-							<label class="input"> <i class="icon-append fa fa-phone"></i>
+							@if ($errors->has('mobile_no'))	<label class="input state-error"> <i class="icon-append fa fa-phone"></i>
+							@else 							<label class="input"> <i class="icon-append fa fa-phone"></i>
+							@endif
 								{{ Form::text('mobile_no', null, ['placeholder'=>'Mobile Number']) }}
 							</label>
+							@if ($errors->has('mobile_no')) <div class="note note-error">{{ $errors->first('mobile_no') }}</div> @endif
 						</section>
 					</fieldset>
 					<footer>
 						<button type="submit" class="btn btn-primary">
-							Add Contact to Client
+							Add
 						</button>
 					</footer>
-				</form>
+				{{Form::close()}}
 			</div>
 		</div>
 	</div>

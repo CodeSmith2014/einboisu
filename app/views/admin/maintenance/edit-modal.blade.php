@@ -15,15 +15,17 @@
 					{{ Form::hidden('maintenance_id', '', ['id'=>'maintenance_id'])}}
 					<section>
 						<label for="total_hours_purchased" class="label">Total Hours Purchased</label>
-						<label class="input"> <i class="icon-append fa fa-clock-o"></i>
+						@if ($errors->has('total_hours_purchased'))	<label class="input state-error"> <i class="icon-append fa fa-clock-o"></i>
+						@else 										<label class="input"> <i class="icon-append fa fa-clock-o"></i>
+						@endif
 							{{ Form::text('total_hours_purchased', '', ['id'=>'total_hours_purchased', 'placeholder'=>'Total Hours Purchased'])}}
-							
 						</label>
+						@if ($errors->has('total_hours_purchased')) <div class="note note-error">{{ $errors->first('total_hours_purchased') }}</div> @endif
 					</section>
 				</fieldset>
 				<footer>
 					<button type="submit" class="btn btn-primary">
-						Edit Total Hours Purchased
+						Update
 					</button>
 				</footer>
 				{{Form::close()}}

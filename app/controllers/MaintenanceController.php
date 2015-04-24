@@ -41,7 +41,7 @@ class MaintenanceController extends \BaseController {
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Redirect::route('maintenance.index')->withErrors($validator)->withInput();
 		}else{
 			$maintenance = new Maintenance;
 			$client_id = Input::get('client_id');

@@ -213,10 +213,10 @@ responsiveHelper_datatable_col_reorder.respond();
 @section('javascript')
 <script type="text/javascript">
 $(document).on("click", ".confirm-delete", function () {
-	var id = $(this).data('id');
-	var url = "{{URL::route('clients.index')}}";
-	var url = url+'/'+id;
-	$("#confirm-delete-form").attr("action",url);
+	var id 				= $(this).data('id');
+	var url 			= "{{URL::route('clients.index')}}" + "/" + id;
+
+	$("#delete-modal-client").attr("action",url);
 });
 </script>
 @stop

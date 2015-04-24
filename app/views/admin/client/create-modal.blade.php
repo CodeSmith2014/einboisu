@@ -13,39 +13,56 @@
 				{{ Form::open(['url'=>URL::route('clients.store'), 'class'=>'smart-form', 'method'=>'POST']) }}
 					<fieldset>
 						<div class="row">
-							<section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<label class="input"> <i class="icon-append fa fa-university"></i>
+							<section class="col col-xs-12 col-sm-8 col-md-8 col-lg-8">
+								@if ($errors->has('name'))		<label class="input state-error"> <i class="icon-append fa fa-university"></i>
+								@else							<label class="input"> <i class="icon-append fa fa-university"></i>
+								@endif
 									{{ Form::text('name', null, ['placeholder'=>'Company Name']) }}
 								</label>
+								@if ($errors->has('name')) <div class="note note-error">{{ $errors->first('name') }}</div> @endif
+							</section>
+							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								@if ($errors->has('reg_no'))	<label class="input state-error"> <i class="icon-append fa fa-briefcase"></i>
+								@else 							<label class="input"> <i class="icon-append fa fa-briefcase"></i>
+								@endif
+									{{ Form::text('reg_no', null, ['placeholder'=>'Registration No.']) }}
+								</label>
+								@if ($errors->has('reg_no')) <div class="note note-error">{{ $errors->first('reg_no') }}</div> @endif
 							</section>
 						</div>
 						<div class="row">
-							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<label class="input"> <i class="icon-append fa fa-briefcase"></i>
-									{{ Form::text('reg_no', null, ['placeholder'=>'Registration No.']) }}
-								</label>
-							</section>
-							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<label class="input"> <i class="icon-append fa fa-phone"></i>
+							<section class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								@if ($errors->has('office_no')) <label class="input state-error"> <i class="icon-append fa fa-phone"></i>
+								@else 							<label class="input"> <i class="icon-append fa fa-phone"></i>
+								@endif
 									{{ Form::text('office_no', null, ['type'=>'tel', 'placeholder'=>'Office Number', 'data-mask'=>'+(99) 9999 9999']) }}
 								</label>
+								@if ($errors->has('office_no')) <div class="note note-error">{{ $errors->first('office_no') }}</div> @endif
 							</section>
-							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<label class="input"> <i class="icon-append fa fa-fax"></i>
+							<section class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								@if ($errors->has('fax_no'))	<label class="input state-error"> <i class="icon-append fa fa-fax"></i>
+								@else 							<label class="input"> <i class="icon-append fa fa-fax"></i>
+								@endif
 									{{ Form::text('fax_no', null, ['type'=>'tel', 'placeholder'=>'Fax Number', 'data-mask'=>'+(99) 9999 9999']) }}
 								</label>
+								@if ($errors->has('fax_no')) <div class="note note-error">{{ $errors->first('fax_no') }}</div> @endif
 							</section>
 						</div>
 					</fieldset>
 					<fieldset>
 						<section>
-							<label class="textarea">
+							@if ($errors->has('address'))		<label class="textarea state-error">
+							@else 								<label class="textarea">
+							@endif
 								{{ Form::textarea('address', null, ['class'=>'custom-scroll', 'size'=>'1x3', 'placeholder'=>'Address']) }}
 							</label>
+							@if ($errors->has('address')) <div class="note note-error">{{ $errors->first('address') }}</div> @endif
 						</section>
 						<div class="row">
-							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<label class="select">
+							<section class="col col-xs-12 col-sm-5 col-md-5 col-lg-5">
+								@if ($errors->has('country'))	<label class="select state-error">
+								@else 							<label class="select">
+								@endif
 									<select name="country">
 										<option value="0" selected="" disabled="">Country</option>
 										<option value="Aaland Islands">Aaland Islands</option>
@@ -300,27 +317,37 @@
 									</select>
 									<i></i>
 								</label>
+								@if ($errors->has('country')) <div class="note note-error">{{ $errors->first('country') }}</div> @endif
 							</section>
 							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<label class="input">
+								@if ($errors->has('city'))		<label class="input state-error">
+								@else 							<label class="input">
+								@endif
 									{{ Form::text('city', null, ['placeholder'=>'City']) }}
 								</label>
+								@if ($errors->has('city')) <div class="note note-error">{{ $errors->first('city') }}</div> @endif
 							</section>
-							<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<label class="input">
+							<section class="col col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								@if ($errors->has('postal_code'))	<label class="input state-error">
+								@else 								<label class="input">
+								@endif
 									{{ Form::text('postal_code', null, ['placeholder'=>'Postal Code']) }}
 								</label>
+								@if ($errors->has('postal_code')) <div class="note note-error">{{ $errors->first('postal_code') }}</div> @endif
 							</section>
 						</div>
 						<section>
-							<label class="textarea">
+							@if ($errors->has('notes'))			<label class="textarea state-error">
+							@else 								<label class="textarea">
+							@endif
 								{{ Form::textarea('notes', null, ['class'=>'custom-scroll', 'size'=>'1x3', 'placeholder'=>'Additional Information']) }}
 							</label>
+							@if ($errors->has('notes')) <div class="note note-error">{{ $errors->first('notes') }}</div> @endif
 						</section>
 					</fieldset>
 					<footer>
 						<button type="submit" class="btn btn-primary">
-							Add New Client
+							Add
 						</button>
 					</footer>
 				{{Form::close()}}

@@ -52,7 +52,7 @@ Contact Personnel List
 									<th>Contact Personnel Name</th>
 									<th><i class="fa fa-fw fa-envelope-o text-muted hidden-md hidden-sm hidden-xs"></i> Email Address</th>
 									<th><i class="fa fa-phone fa-map-marker hidden-md hidden-sm hidden-xs"></i> Mobile No.</th>
-									<th data-hide="phone,tablet">Company</th>
+									<th data-hide="phone,tablet">Orphan?</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -62,7 +62,7 @@ Contact Personnel List
 									<td>{{$contact->email}}</td>
 									<td>{{$contact->mobile_no}}</td>
 									@if($contact->clients->count() > 0)
-									<td>{{$contact->clients[0]->name}}</td>
+									<td>No</td>
 									@else
 									<td>Yes</td>
 

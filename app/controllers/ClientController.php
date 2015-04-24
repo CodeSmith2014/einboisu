@@ -46,7 +46,7 @@ class ClientController extends \BaseController {
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Redirect::route('clients.index')->withErrors($validator)->withInput();
 		}else{
 			$client = new Client;
 			$client->name = strtoupper((Input::get('name')));
@@ -57,6 +57,7 @@ class ClientController extends \BaseController {
 			$client->postal_code = Input::get('postal_code');
 			$client->office_no = Input::get('office_no');
 			$client->fax_no = Input::get('fax_no');
+			$client->notes = Input::get('notes');
 			$client->save();
 			return Redirect::route('clients.index')->with('message','Client successfully added.');
 		}
@@ -73,7 +74,8 @@ class ClientController extends \BaseController {
 	{
 		$client = Client::find($id);
 		$contacts = $client->contacts;
-		return View::make('admin.client.show')->with('client',$client)->with('contacts',$contacts);
+		$message = Session::get('message');
+		return View::make('admin.client.show')->with('client',$client)->with('contacts',$contacts)->with('message',$message);
 	}
 
 
@@ -85,10 +87,7 @@ class ClientController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$client = Client::find($id);
-		$contacts = $client->contacts;
-		$message = Session::get('message');
-		return View::make('admin.client.edit')->with('client',$client)->with('contacts',$contacts)->with('message', $message);
+
 	}
 
 
@@ -112,7 +111,7 @@ class ClientController extends \BaseController {
 			);
 		$validator = Validator::make(Input::all(), $rules);
 		if($validator->fails()){
-			return Redirect::route('clients.edit',$id)->withErrors($validator)->withInput();
+			return Redirect::route('clients.show',$id)->withErrors($validator); //->withInput();
 		}else{
 			$client = Client::find($id);
 			$client->name = strtoupper((Input::get('name')));
@@ -123,8 +122,9 @@ class ClientController extends \BaseController {
 			$client->postal_code = Input::get('postal_code');
 			$client->office_no = Input::get('office_no');
 			$client->fax_no = Input::get('fax_no');
+			$client->notes = Input::get('notes');
 			$client->save();
-			return Redirect::route('clients.edit',$id)->with('message','Client information successfully updated.');
+			return Redirect::route('clients.show',$id)->with('message','Client information successfully updated.');
 		}
 	}
 

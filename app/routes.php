@@ -43,11 +43,9 @@ Route::group(array('before' => 'auth'), function()
 		"as"=>"client.set.default.contact",
 		"uses"=>"ClientController@set_default_contact"
 		));
-	Route::resource('clients','ClientController');
-	Route::post('contacts/ajaxGetContacts','ContactController@ajaxGetContacts');
-	
+	Route::resource('clients','ClientController', ['except'=>['create','edit']]);
 	Route::resource('contacts','ContactController', ['except'=>['create','show','edit']]);
-	
+	Route::post('contacts/ajaxGetContacts','ContactController@ajaxGetContacts');
 	Route::resource('maintenance','MaintenanceController', ['except'=>['create','edit']]);
 	Route::resource('onsitesupport','OnsitesupportController', ['except'=>['create','show','edit']]);
 

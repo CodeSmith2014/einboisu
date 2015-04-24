@@ -2,7 +2,7 @@
 
 @section('title')
 @parent
-Client Details - Maintenance Support - E Inboisu
+Client Details - Client Information - E Inboisu
 @stop
 
 @section('breadcrumb')
@@ -25,16 +25,18 @@ Client Details
 
 @section('page_title_right')
 <a href="{{URL::route('clients.index')}}" class="btn btn-danger btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-circle-arrow-up fa-lg"></i>Back</a>
+<a data-toggle="modal" class="add-modal-contact btn btn-primary btn-lg pull-right header-btn" data-cid="{{$client->id}}" href="#addContactModal"><i class="fa fa-plus fa-lg"></i> Add Contact Personnel</a>
 @stop
 
 @section('modals')
 	@include('admin.client.edit-modal')
+	@include('admin.contact.create-modal')
 @stop
 
 @section('content')
 <div class="row">
 	<article class="col-sm-12 col-md-12 col-lg-12">
-		@if($errors->count() > 0)
+		@if($errors->has())
 		<div class="alert alert-block alert-danger">
 			<ul>
 				@foreach($errors->all() as $error)
@@ -57,28 +59,28 @@ Client Details
 					<form id="company-form" class="smart-form" novalidate="novalidate">
 						<fieldset>
 							<div class="row">
-								<section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<section class="col col-xs-12 col-sm-8 col-md-8 col-lg-8">
 									<label for="name" class="label">Company Name</label>
 									<label class="input state-disabled"> <i class="icon-append fa fa-university"></i>
 										{{ Form::text('name', $client->name, ['disabled'=>'disabled'])}}
 									</label>
 								</section>
-
-							</div>
-							<div class="row">
 								<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
 									<label for="reg_no" class="label">Registration No.</label>
 									<label class="input state-disabled"> <i class="icon-append fa fa-briefcase"></i>
 										{{ Form::text('reg_no', $client->reg_no, ['disabled'=>'disabled'])}}
 									</label>
 								</section>
-								<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+							</div>
+							<div class="row">
+
+								<section class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
 									<label for="office_no" class="label">Office No.</label>
 									<label class="input state-disabled"> <i class="icon-append fa fa-phone"></i>
 										{{ Form::text('office_no', $client->office_no, ['disabled'=>'disabled'])}}
 									</label>
 								</section>
-								<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								<section class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
 									<label for="fax_no" class="label">Fax No.</label>
 									<label class="input state-disabled"> <i class="icon-append fa fa-fax"></i>
 										{{ Form::text('fax_no', $client->fax_no, ['disabled'=>'disabled'])}}
@@ -94,7 +96,7 @@ Client Details
 								</label>
 							</section>
 							<div class="row">
-								<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								<section class="col col-xs-12 col-sm-5 col-md-5 col-lg-5">
 									<label for="country" class="label">Country</label>
 									<label class="select state-disabled">
 										<select name="country" disabled="disabled">
@@ -108,7 +110,7 @@ Client Details
 										{{ Form::text('city', $client->city, ['disabled'=>'disabled'])}}
 									</label>
 								</section>
-								<section class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								<section class="col col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<label for="postal_code" class="label">Postal Code</label>
 									<label class="input state-disabled">
 										{{ Form::text('postal_code', $client->postal_code, ['disabled'=>'disabled'])}}
@@ -299,8 +301,6 @@ $(document).on("click", ".edit-modal-client", function () {
 	var notes			= $(this).data('notes');
 	var url 			= "{{URL::route('clients.index')}}" + "/" + cid;
 
-	console.log(address);
-
 	$("#editClientModal #edit-modal-client").attr("action",url);
 	$("#editClientModal #client_id").attr("value",cid);
 	$("#editClientModal #name").attr("value",name);
@@ -308,10 +308,18 @@ $(document).on("click", ".edit-modal-client", function () {
 	$("#editClientModal #office_no").attr("value",office_no);
 	$("#editClientModal #fax_no").attr("value",fax_no);
 	$("#editClientModal #address").val(address);
-	$("#editClientModal #country").attr("value",country);
+	$("#editClientModal #country option").filter(function() { return $(this).text() == country; }).prop('selected',true);
 	$("#editClientModal #city").attr("value",city);
 	$("#editClientModal #postal_code").attr("value",postal_code);
 	$("#editClientModal #notes").val(notes);
+});
+
+$(document).on("click", ".add-modal-contact", function () {
+	var cid 			= $(this).data('cid');
+	var url 			= "{{URL::route('contacts.index')}}";
+
+	$("#addContactModal #add-modal-contact").attr("action",url);
+	$("#addContactModal #client_id").attr("value",cid);
 });
 </script>
 @stop

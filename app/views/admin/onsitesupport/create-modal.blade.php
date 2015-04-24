@@ -14,19 +14,25 @@
 					<fieldset>
 						<section>
 							{{ Form::hidden('maintenance_id', null, ['id'=>'maintenance_id'])}}
-							<label class="input"> <i class="icon-append fa fa-clock-o"></i>
+							@if ($errors->has('hours_spent'))	<label class="input state-error"> <i class="icon-append fa fa-clock-o"></i>
+							@else 								<label class="input"> <i class="icon-append fa fa-clock-o"></i>
+							@endif
 								{{ Form::text('hours_spent', null, ['placeholder'=>'Hours Spent'])}}
 							</label>
+							@if ($errors->has('hours_spent')) <div class="note note-error">{{ $errors->first('hours_spent') }}</div> @endif
 						</section>
 						<section>
-							<label class="input"> <i class="icon-append fa fa-calendar"></i>
+							@if ($errors->has('onsite_date'))	<label class="input state-error"> <i class="icon-append fa fa-calendar"></i>
+							@else 								<label class="input"> <i class="icon-append fa fa-calendar"></i>
+							@endif
 								{{ Form::text('onsite_date', null, ['type'=>'tel', 'placeholder'=>'Onsite Date YYYY-MM-DD'])}}
 							</label>
+							@if ($errors->has('onsite_date')) <div class="note note-error">{{ $errors->first('onsite_date') }}</div> @endif
 						</section>
 					</fieldset>
 					<footer>
 						<button type="submit" class="btn btn-primary">
-							Add Onsite Support
+							Add
 						</button>
 					</footer>
 				{{Form::close()}}

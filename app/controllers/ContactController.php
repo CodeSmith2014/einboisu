@@ -25,7 +25,7 @@ class ContactController extends \BaseController {
 		if($a=Contact::where('email',Input::get('email'))->first())
 		{
 			$client->contacts()->save($a);
-			return Redirect::route('clients.edit',Input::get('client_id'));
+			return Redirect::route('clients.show',Input::get('client_id'));
 		}else{
 			$rules = array(
 				'name' => 'required',
@@ -34,15 +34,14 @@ class ContactController extends \BaseController {
 				);
 			$validator = Validator::make(Input::all(), $rules);
 			if($validator->fails()){
-				return Redirect::route('clients.edit',Input::get('client_id'))
-				->withErrors($validator);
+				return Redirect::route('clients.show',Input::get('client_id'))->withErrors($validator);
 			}else{
 				$contact = new Contact;
 				$contact->name = ucfirst(Input::get('name'));
 				$contact->email = Input::get('email');
 				$contact->mobile_no = Input::get('mobile_no');
 				$client->contacts()->save($contact);
-				return Redirect::route('clients.edit',Input::get('client_id'));
+				return Redirect::route('clients.show',Input::get('client_id'));
 			}
 		}
 	}
